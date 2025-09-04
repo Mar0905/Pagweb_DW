@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class DemoController {
 
-    // lista donde se guarda temporalmente los testimonios
     private List<Testimonio> testimonios = new ArrayList<>();
 
     @GetMapping("/")

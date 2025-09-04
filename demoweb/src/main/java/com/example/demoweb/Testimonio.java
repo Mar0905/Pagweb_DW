@@ -1,20 +1,17 @@
 package com.example.demoweb;
 
-// Clase modelo simple para representar un testimonio
 public class Testimonio {
     private String nombre;
     private String mensaje;
 
-    // Constructor vacío (necesario para Spring y formularios)
+    // Constructor vacío
     public Testimonio() {}
 
-    // Constructor con parámetros
     public Testimonio(String nombre, String mensaje) {
         this.nombre = nombre;
         this.mensaje = mensaje;
     }
 
-    // Getters y Setters
     public String getNombre() {
         return nombre;
     }

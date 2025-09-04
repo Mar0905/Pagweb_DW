@@ -71,9 +71,9 @@
 	    Agregar Testimonio
 	  </button>
 	</div>
-
+	
     <div class="row g-4">
-      <!-- Testimonio fijo 1 -->
+      <!-- Testimonio 1 -->
       <div class="col-md-6">
         <div class="p-4 bg-white shadow-sm rounded">
           <p>“Excelente calidad y atención. ¡Recomendado!”</p>
@@ -81,7 +81,7 @@
         </div>
       </div>
 
-      <!-- Testimonio fijo 2 -->
+      <!-- Testimonio 2 -->
       <div class="col-md-6">
         <div class="p-4 bg-white shadow-sm rounded">
           <p>“Muy feliz con mi compra, la ropa es hermosa.”</p>
@@ -89,7 +89,7 @@
         </div>
       </div>
 
-      <!-- Testimonio fijo 3 -->
+      <!-- Testimonio 3 -->
       <div class="col-md-6">
         <div class="p-4 bg-white shadow-sm rounded">
           <p>“El envío fue rápido y la prenda superó mis expectativas.”</p>
@@ -97,7 +97,6 @@
         </div>
       </div>
 
-      <!-- Testimonios dinámicos -->
       <div class="col-md-6" th:each="testimonio : ${testimonios}">
         <div class="p-4 bg-white shadow-sm rounded">
           <p th:text="${testimonio.mensaje}">Mensaje aquí</p>
@@ -108,7 +107,7 @@
   </div>
 </section>
 
-<!-- Modal para agregar testimonio -->
+<!-- para agregar el testimonio -->
 <div class="modal fade" id="modalTestimonio" tabindex="-1" aria-labelledby="modalTestimonioLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
