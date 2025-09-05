@@ -41,5 +41,15 @@ public class DemoController {
         testimonios.add(testimonio);
         return "redirect:/novedades"; // redirige a la página de novedades
     }
+
+    @GetMapping("/nosotros")
+    public String nosotros() {
+        return "nosotros";
+    }
+    
+    @GetMapping("/contacto")
+    public String contacto() {
+        return "contacto";
+    }
 }
 
