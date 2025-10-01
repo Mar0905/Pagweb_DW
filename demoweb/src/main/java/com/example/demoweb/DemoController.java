@@ -51,8 +51,8 @@ public class DemoController {
             @RequestParam("marcaPolo") String marcaPolo) {
 
         Testimonio t = new Testimonio();
-        t.setNombre(colorPolo);
-        t.setComentario(marcaPolo);
+        t.setColor(colorPolo);
+        t.setMarca(marcaPolo);
         testimonios.add(t);
 
         return "redirect:/";
@@ -65,8 +65,8 @@ public class DemoController {
             @RequestParam("marcaCamisa") String marcaCamisa) {
 
         Testimonio t = new Testimonio();
-        t.setNombre(colorCamisa);
-        t.setComentario(marcaCamisa);
+        t.setColor(colorCamisa);
+        t.setMarca(marcaCamisa);
         testimonios.add(t);
 
         return "redirect:/";
@@ -79,8 +79,8 @@ public class DemoController {
             @RequestParam("marcaPantalon") String marcaPantalon) {
 
         Testimonio t = new Testimonio();
-        t.setNombre(colorPantalon);
-        t.setComentario(marcaPantalon);
+        t.setColor(colorPantalon);
+        t.setMarca(marcaPantalon);
         testimonios.add(t);
 
         return "redirect:/";
@@ -93,8 +93,8 @@ public class DemoController {
             @RequestParam("marcaZapato") String marcaZapato) {
 
         Testimonio t = new Testimonio();
-        t.setNombre(colorZapato);
-        t.setComentario(marcaZapato);
+        t.setColor(colorZapato);
+        t.setMarca(marcaZapato);
         testimonios.add(t);
 
         return "redirect:/";

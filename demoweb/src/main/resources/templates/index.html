@@ -116,21 +116,21 @@
   </div>
 </section>
 
-<!-- ✅ Tabla de resultados -->
+<!--Tabla de resultados -->
 <div class="container mt-5">
   <h2 class="mb-3">Resultados ingresados</h2>
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>Nombre</th>
-        <th>Comentario</th>
+        <th>Color</th>
+        <th>Marca</th>
       </tr>
     </thead>
     <tbody>
-      <tr th:each="t : ${testimonios}">
-        <td th:text="${t.nombre}"></td>
-        <td th:text="${t.comentario}"></td>
-      </tr>
+     <tr th:each="t : ${testimonios}">
+    <td th:text="${t.color}"></td>
+    <td th:text="${t.marca}"></td>
+</tr>
     </tbody>
   </table>
 </div>

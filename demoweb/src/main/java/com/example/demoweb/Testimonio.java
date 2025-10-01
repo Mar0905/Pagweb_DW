@@ -1,31 +1,31 @@
 package com.example.demoweb;
 
 public class Testimonio {
-    private String nombre;
-    private String comentario;
+    private String color;
+    private String marca;
 
     public Testimonio() {}
 
-    public Testimonio(String nombre, String comentario) {
-        this.nombre = nombre;
-        this.comentario = comentario;
+    public Testimonio(String color, String marca) {
+        this.color = color;
+        this.marca = marca;
     }
 
-    // Getter y Setter de nombre
-    public String getNombre() {
-        return nombre;
+    // Getter y Setter de color
+    public String getColor() {
+        return color;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setColor(String color) {
+        this.color = color;
     }
 
-    // Getter y Setter de comentario
-    public String getComentario() {
-        return comentario;
+    // Getter y Setter de marca
+    public String getMarca() {
+        return marca;
     }
 
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
 }
