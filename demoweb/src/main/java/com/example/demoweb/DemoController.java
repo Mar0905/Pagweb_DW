@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class DemoController {
@@ -15,41 +16,97 @@ public class DemoController {
     private List<Testimonio> testimonios = new ArrayList<>();
 
     @GetMapping("/")
-    public String index() {
-        return "index"; // busca index.html en templates
+    public String index(Model model) {
+        model.addAttribute("testimonios", testimonios);
+        return "index";
     }
 
     @GetMapping("/productos")
     public String productos() {
-        return "productos"; // busca productos.html en templates
+        return "productos";
     }
 
     @GetMapping("/menu")
     public String menu() {
-        return "menu"; // busca menu.html en templates
+        return "menu";
     }
 
     @GetMapping("/novedades")
     public String novedades(Model model) {
-        model.addAttribute("testimonios", testimonios); // lista de testimonios
+        model.addAttribute("testimonios", testimonios);
         model.addAttribute("nuevoTestimonio", new Testimonio());
-        return "novedades"; // busca novedades.html en templates
+        return "novedades";
     }
 
     @PostMapping("/agregarTestimonio")
     public String agregarTestimonio(@ModelAttribute("nuevoTestimonio") Testimonio testimonio) {
         testimonios.add(testimonio);
-        return "redirect:/novedades"; // redirige a la página de novedades
+        return "redirect:/novedades";
+    }
+
+    // ----------------- GET1 (Polo) -----------------
+    @GetMapping("/get1")
+    public String get1(
+            @RequestParam("colorPolo") String colorPolo,
+            @RequestParam("marcaPolo") String marcaPolo) {
+
+        Testimonio t = new Testimonio();
+        t.setNombre(colorPolo);
+        t.setComentario(marcaPolo);
+        testimonios.add(t);
+
+        return "redirect:/";
+    }
+
+    // ----------------- GET2 (Camisa) -----------------
+    @GetMapping("/get2")
+    public String get2(
+            @RequestParam("colorCamisa") String colorCamisa,
+            @RequestParam("marcaCamisa") String marcaCamisa) {
+
+        Testimonio t = new Testimonio();
+        t.setNombre(colorCamisa);
+        t.setComentario(marcaCamisa);
+        testimonios.add(t);
+
+        return "redirect:/";
+    }
+
+    // ----------------- POST1 (Pantalón) -----------------
+    @PostMapping("/post1")
+    public String post1(
+            @RequestParam("colorPantalon") String colorPantalon,
+            @RequestParam("marcaPantalon") String marcaPantalon) {
+
+        Testimonio t = new Testimonio();
+        t.setNombre(colorPantalon);
+        t.setComentario(marcaPantalon);
+        testimonios.add(t);
+
+        return "redirect:/";
+    }
+
+    // ----------------- POST2 (Zapato) -----------------
+    @PostMapping("/post2")
+    public String post2(
+            @RequestParam("colorZapato") String colorZapato,
+            @RequestParam("marcaZapato") String marcaZapato) {
+
+        Testimonio t = new Testimonio();
+        t.setNombre(colorZapato);
+        t.setComentario(marcaZapato);
+        testimonios.add(t);
+
+        return "redirect:/";
     }
 
     @GetMapping("/nosotros")
     public String nosotros() {
         return "nosotros";
     }
-    
+
     @GetMapping("/contacto")
     public String contacto() {
         return "contacto";
     }
 }
-

@@ -2,16 +2,16 @@ package com.example.demoweb;
 
 public class Testimonio {
     private String nombre;
-    private String mensaje;
+    private String comentario;
 
-    // Constructor vacío
     public Testimonio() {}
 
-    public Testimonio(String nombre, String mensaje) {
+    public Testimonio(String nombre, String comentario) {
         this.nombre = nombre;
-        this.mensaje = mensaje;
+        this.comentario = comentario;
     }
 
+    // Getter y Setter de nombre
     public String getNombre() {
         return nombre;
     }
@@ -20,11 +20,12 @@ public class Testimonio {
         this.nombre = nombre;
     }
 
-    public String getMensaje() {
-        return mensaje;
+    // Getter y Setter de comentario
+    public String getComentario() {
+        return comentario;
     }
 
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
     }
 }
