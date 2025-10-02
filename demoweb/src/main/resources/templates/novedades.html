@@ -73,7 +73,7 @@
 	</div>
 	
     <div class="row g-4">
-      <!-- Testimonio 1 -->
+      <!-- Testimonios de ejemplo -->
       <div class="col-md-6">
         <div class="p-4 bg-white shadow-sm rounded">
           <p>“Excelente calidad y atención. ¡Recomendado!”</p>
@@ -81,7 +81,6 @@
         </div>
       </div>
 
-      <!-- Testimonio 2 -->
       <div class="col-md-6">
         <div class="p-4 bg-white shadow-sm rounded">
           <p>“Muy feliz con mi compra, la ropa es hermosa.”</p>
@@ -89,15 +88,8 @@
         </div>
       </div>
 
-      <!-- Testimonio 3 -->
-      <div class="col-md-6">
-        <div class="p-4 bg-white shadow-sm rounded">
-          <p>“El envío fue rápido y la prenda superó mis expectativas.”</p>
-          <footer class="blockquote-footer">Ana Torres</footer>
-        </div>
-      </div>
-
-      <div class="col-md-6" th:each="testimonio : ${testimonios}">
+      <!-- Itera sobre los testimonios reales -->
+      <div class="col-md-6" th:each="testimonio : ${testimoniosNovedades}">
         <div class="p-4 bg-white shadow-sm rounded">
           <p th:text="${testimonio.mensaje}">Mensaje aquí</p>
           <footer class="blockquote-footer" th:text="${testimonio.nombre}">Nombre aquí</footer>
@@ -107,11 +99,11 @@
   </div>
 </section>
 
-<!-- para agregar el testimonio -->
+<!-- Modal para agregar testimonio -->
 <div class="modal fade" id="modalTestimonio" tabindex="-1" aria-labelledby="modalTestimonioLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form th:action="@{/agregarTestimonio}" th:object="${nuevoTestimonio}" method="post">
+      <form th:action="@{/agregarTestimonioNovedad}" th:object="${nuevoTestimonio2}" method="post">
         <div class="modal-header">
           <h5 class="modal-title" id="modalTestimonioLabel">Nuevo Testimonio</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
