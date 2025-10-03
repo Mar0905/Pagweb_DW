@@ -99,25 +99,7 @@ public class AdminController {
             return "redirect:/inicio-sesion";
         }
     }
-    
-    // Actualizar producto inline (POST)
-    @PostMapping("/admin/actualizar-producto")
-    public String actualizarProducto(@ModelAttribute Producto productoActualizado) {
-        System.out.println("Actualizando producto: " + productoActualizado);
-        
-        for (Producto p : productos) {
-            if (p.getId() == productoActualizado.getId()) {
-                p.setNombre(productoActualizado.getNombre());
-                p.setPrecio(productoActualizado.getPrecio());
-                p.setStock(productoActualizado.getStock());
-                p.setColor(productoActualizado.getColor());
-                break;
-            }
-        }
-        
-        return "redirect:/admin/almacenamiento";
-    }
-    
+
     // Ir a página de edición con PathVariable
     @GetMapping("/admin/editar/{id}")
     public String irEditarProducto(@PathVariable("id") int id, Model model) {
