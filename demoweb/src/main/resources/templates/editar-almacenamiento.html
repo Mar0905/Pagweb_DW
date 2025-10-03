@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Producto | Modempres</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            top: -250px;
+            right: -250px;
+        }
+        
+        body::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50%;
+            bottom: -200px;
+            left: -200px;
+        }
+        
+        .edit-wrapper {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 700px;
+        }
+        
+        .edit-container {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 45px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .edit-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 35px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(44, 62, 80, 0.3);
+        }
+        
+        .edit-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .edit-header p {
+            font-size: 0.95rem;
+            opacity: 0.95;
+            margin: 0;
+        }
+        
+        .admin-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .product-id-box {
+            background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+            border-left: 5px solid #34495e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .product-id-box h3 {
+            color: #2c3e50;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .product-id-badge {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.3rem;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+        }
+        
+        .form-section {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-label i {
+            color: #34495e;
+            font-size: 1.1rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            color: #2c3e50;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #34495e;
+            background: white;
+            box-shadow: 0 0 0 0.2rem rgba(52, 73, 94, 0.15);
+        }
+        
+        .form-control:hover {
+            border-color: #adb5bd;
+        }
+        
+        .form-control::placeholder {
+            color: #6c757d;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+        
+        .btn-cancel {
+            flex: 1;
+            padding: 14px;
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(127, 140, 141, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-cancel:hover {
+            background: linear-gradient(135deg, #7f8c8d, #6c7a7b);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(127, 140, 141, 0.4);
+        }
+        
+        .btn-save {
+            flex: 2;
+            padding: 14px;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-save:hover {
+            background: linear-gradient(135deg, #229954, #1e8449);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(39, 174, 96, 0.4);
+        }
+        
+        .btn-save:active,
+        .btn-cancel:active {
+            transform: translateY(0);
+        }
+        
+        .info-alert {
+            background: linear-gradient(135d, #d1ecf1, #bee5eb);
+            border-left: 4px solid #17a2b8;
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-top: 25px;
+            color: #0c5460;
+        }
+        
+        .info-alert strong {
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        
+        .info-alert p {
+            margin: 0;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .edit-container {
+                padding: 30px 25px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn-cancel,
+            .btn-save {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-wrapper">
+        <div class="edit-container">
+            <div class="edit-header">
+                <h1>
+                    <i class="bi bi-pencil-square"></i>
+                    Editar Producto
+                </h1>
+                <p>Administrador:<span class="nombreAdmin" th:text="${nombreAdmin}">Admin</span></p>
+            </div>
+            
+            <div class="product-id-box">
+                <h3>
+                    <i class="bi bi-tag"></i>
+                    Identificador del Producto
+                </h3>
+                <span class="product-id-badge" th:text="${productoEdicion.id}">1</span>
+            </div>
+            
+            <form th:action="@{/admin/guardar-producto}" method="post">
+                <input type="hidden" name="id" th:value="${productoEdicion.id}" />
+                
+                <div class="form-section">
+                    <label for="nombre" class="form-label">
+                        <i class="bi bi-box-seam"></i>
+                        Nombre del Producto
+                    </label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="nombre" 
+                           name="nombre" 
+                           th:value="${productoEdicion.nombre}" 
+                           placeholder="Ej: Camiseta Básica Premium" 
+                           maxlength="100"
+                           required>
+                </div>
+                
+                <div class="form-section">
+                    <label for="precio" class="form-label">
+                        <i class="bi bi-cash-coin"></i>
+                        Precio (S/)
+                    </label>
+                    <input type="number" 
+                           step="0.01" 
+                           class="form-control" 
+                           id="precio" 
+                           name="precio" 
+                           th:value="${productoEdicion.precio}" 
+                           placeholder="Ej: 29.90" 
+                           min="0" 
+                           required>
+                </div>
+                
+                <div class="form-section">
+                    <label for="stock" class="form-label">
+                        <i class="bi bi-graph-up"></i>
+                        Stock Disponible
+                    </label>
+                    <input type="number" 
+                           class="form-control" 
+                           id="stock" 
+                           name="stock" 
+                           th:value="${productoEdicion.stock}" 
+                           placeholder="Ej: 50" 
+                           min="0" 
+                           required>
+                </div>
+                
+                <div class="form-section">
+                    <label for="color" class="form-label">
+                        <i class="bi bi-palette"></i>
+                        Color
+                    </label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="color" 
+                           name="color" 
+                           th:value="${productoEdicion.color}" 
+                           placeholder="Ej: Negro, Blanco, Azul" 
+                           maxlength="50"
+                           required>
+                </div>
+                
+                <div class="button-group">
+                    <a th:href="@{/admin/almacenamiento}" class="btn-cancel">
+                        <i class="bi bi-x-circle"></i>
+                        Cancelar
+                    </a>
+                    <button type="submit" class="btn-save">
+                        <i class="bi bi-check-circle"></i>
+                        Guardar Cambios
+                    </button>
+                </div>
+            </form>
+            
+            <div class="info-alert">
+                <strong>
+                    <i class="bi bi-info-circle"></i>
+                    Información importante
+                </strong>
+                <p>Los cambios se aplicarán inmediatamente en el sistema. Todos los campos son obligatorios para mantener la integridad de los datos.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
