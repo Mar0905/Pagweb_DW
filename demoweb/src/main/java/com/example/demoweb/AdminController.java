@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.example.demoweb.Usuario;
 import com.example.demoweb.Producto;
 
 @Controller
 public class AdminController {
     
-    // Lista de usuarios predeterminados en memoria
+    // Lista de usuarios 
     private List<Usuario> usuarios = null;
     
     // Lista de productos para el administrador
@@ -32,16 +31,26 @@ public class AdminController {
         // Inicializar usuarios
         usuarios = new ArrayList<>();
         usuarios.add(new Usuario("admin", "admin123", "ADMIN", "Administrador Principal"));
+        usuarios.add(new Usuario("admin2", "admin1234", "ADMIN", "Administrador David"));
         usuarios.add(new Usuario("cliente", "123", "CLIENTE", "Cliente Normal"));
-        usuarios.add(new Usuario("usuario1", "pass123", "CLIENTE", "Juan Pérez"));
+        usuarios.add(new Usuario("usuario1", "pass123", "CLIENTE", "Roberto Gomez"));
         
         // Inicializar productos de ropa
         productos = new ArrayList<>();
-        productos.add(new Producto(1, "Camiseta Básica", 29.90, 50, "Blanco"));
-        productos.add(new Producto(2, "Jean Clásico", 89.90, 30, "Azul"));
-        productos.add(new Producto(3, "Polera Deportiva", 45.00, 25, "Negro"));
-        productos.add(new Producto(4, "Vestido Casual", 120.00, 15, "Rojo"));
-        productos.add(new Producto(5, "Chaqueta de Cuero", 250.00, 10, "Marrón"));
+        productos.add(new Producto(1, "Camisa Elegante", 89.90, 40, "Blanco"));
+        productos.add(new Producto(2, "Jean Clásico", 129.90, 35, "Azul"));
+        productos.add(new Producto(3, "Chaqueta Casual", 149.90, 20, "Negro"));
+        productos.add(new Producto(4, "Gorra Deportiva", 59.90, 60, "Gris"));
+        productos.add(new Producto(5, "Polo Básico", 49.90, 50, "Blanco"));
+        productos.add(new Producto(6, "Casaca Deportiva", 159.90, 25, "Azul Marino"));
+        productos.add(new Producto(7, "Chompa de Lana", 119.90, 15, "Gris"));
+        productos.add(new Producto(8, "Blusa Formal", 89.90, 30, "Celeste"));
+        productos.add(new Producto(9, "Falda plisada estampada", 99.90, 18, "Rosa"));
+        productos.add(new Producto(10, "Short de Verano", 69.90, 45, "Beige"));
+        productos.add(new Producto(11, "Parka Impermeable", 249.90, 10, "Negro"));
+        productos.add(new Producto(12, "Campera de Cuero", 299.90, 12, "Marrón"));
+        productos.add(new Producto(13, "Chaqueta Denim", 179.90, 20, "Azul"));
+        productos.add(new Producto(14, "Sudadera Unisex", 109.90, 40, "Gris"));
     }
     
     // Mostrar página de login
