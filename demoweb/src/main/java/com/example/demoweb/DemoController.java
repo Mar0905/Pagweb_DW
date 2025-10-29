@@ -74,8 +74,7 @@ public class DemoController {
     @GetMapping("/menu")
     public String menu() { return "menu"; }
 
-    @GetMapping("/nosotros")
-    public String nosotros() { return "nosotros"; }
+
 
     @GetMapping("/contacto")
     public String contacto() { return "contacto"; }
