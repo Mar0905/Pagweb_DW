@@ -118,12 +118,14 @@
   <table class="table table-striped">
     <thead>
       <tr>
+      	<th>Tipo</th>
         <th th:text="#{index.resultados.color}">Color</th>
         <th th:text="#{index.resultados.marca}">Marca</th>
       </tr>
     </thead>
     <tbody>
       <tr th:each="t : ${testimonios}">
+      	<td th:text="${t.tipo}"></td>
         <td th:text="${t.color}"></td>
         <td th:text="${t.marca}"></td>
       </tr>
