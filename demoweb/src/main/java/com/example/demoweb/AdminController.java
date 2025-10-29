@@ -100,7 +100,7 @@ public class AdminController {
         }
     }
 
-    // Ir a página de edición con PathVariable
+    // Ir a página de edición 
     @GetMapping("/admin/editar/{id}")
     public String irEditarProducto(@PathVariable("id") int id, Model model) {
         System.out.println("Editando producto con id: " + id);
