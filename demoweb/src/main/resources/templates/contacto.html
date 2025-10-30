@@ -15,18 +15,18 @@
   <div class="row">
     <!-- Formulario -->
     <div class="col-md-6">
-     <form>
+     <form th:action="@{/enviar}" method="post">
         <div class="mb-3">
           <label class="form-label" th:text="#{contacto.nombre}">Nombre</label>
-          <input type="text" class="form-control" th:placeholder="#{contacto.nombre.placeholder}" required>
+          <input type="text" class="form-control" name="nombre" th:placeholder="#{contacto.nombre.placeholder}" required>
         </div>
         <div class="mb-3">
           <label class="form-label" th:text="#{contacto.correo}">Correo</label>
-          <input type="email" class="form-control" th:placeholder="#{contacto.correo.placeholder}" required>
+          <input type="email" class="form-control" name="correo" th:placeholder="#{contacto.correo.placeholder}" required>
         </div>
         <div class="mb-3">
           <label class="form-label" th:text="#{contacto.mensaje}">Mensaje</label>
-          <textarea class="form-control" th:placeholder="#{contacto.mensaje.placeholder}" required></textarea>
+          <textarea class="form-control" name="mensaje" th:placeholder="#{contacto.mensaje.placeholder}" required></textarea>
         </div>
         <!-- Botón -->
         <button type="submit" class="btn btn-danger w-100" th:text="#{contacto.boton}">
