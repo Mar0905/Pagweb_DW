@@ -67,9 +67,6 @@ public class DemoController {
     }
 
     // ------------------- OTROS -------------------
-    @GetMapping("/productos")
-    public String productos() { return "productos"; }
-
     @GetMapping("/menu")
     public String menu() { return "menu"; }
 
