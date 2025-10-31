@@ -14,9 +14,17 @@ public class Testimonio {
     private String mensaje;
     private Boolean visible;
 
-    // Getters
+    public Long getId_testimonio() { return id_testimonio; }
+    public void setId_testimonio(Long id_testimonio) { this.id_testimonio = id_testimonio; }
+
     public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
     public String getMensaje() { return mensaje; }
+    public void setMensaje(String mensaje) { this.mensaje = mensaje; }
+
+    public Boolean getVisible() { return visible; }
+    public void setVisible(Boolean visible) { this.visible = visible; }
 
     @Override
     public String toString() {
