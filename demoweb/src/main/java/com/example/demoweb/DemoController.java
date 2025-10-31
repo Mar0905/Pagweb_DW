@@ -52,7 +52,7 @@ public class DemoController {
         return "redirect:/";
     }
 
-    // ------------------- NOVEDADES -------------------
+    /* ------------------- NOVEDADES -------------------
     @GetMapping("/novedades")
     public String novedades(Model model) {
         model.addAttribute("testimoniosNovedades", testimoniosNovedades);
@@ -65,6 +65,7 @@ public class DemoController {
         testimoniosNovedades.add(testimonio);
         return "redirect:/novedades";
     }
+   */
 
     // ------------------- OTROS -------------------
     @GetMapping("/productos")
