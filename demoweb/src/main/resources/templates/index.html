@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title th:text="#{index.titulo}">Modempres - Inicio</title>
-  <!-- Bootstrap CSS -->
+  <title>Modempres - Inicio</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
@@ -21,9 +20,11 @@
     .hero::before {
       content: "";
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.55);
     }
     .hero-content {
       position: relative;
@@ -43,68 +44,25 @@
 
 <div th:replace="menu :: menu"></div>
 
-<!-- Sección Hero -->
 <section class="hero">
   <div class="hero-content">
-    <h1 class="display-4 fw-bold" th:text="#{index.bienvenida}">Bienvenido a Modempres</h1>
-    <p class="lead" th:text="#{index.subtitulo}">Tu estilo, tu identidad. Descubre la moda que va contigo.</p>
 
-    <!-- GET1 Polo -->
+    <h1 class="display-4 fw-bold">Bienvenido a Modempres</h1>
+    <p class="lead">Tu estilo, tu identidad. Descubre la moda que va contigo.</p>
+
+    <!-- 🔥 UNA SOLA BARRA DE BÚSQUEDA -->
     <div class="search-box mt-4">
-      <form class="row g-2" th:action="@{/get1}" method="get">
+      <form class="row g-2" th:action="@{/buscar-producto}" method="get">
         <div class="col-md-5">
-          <input type="text" class="form-control" name="colorPolo" th:placeholder="#{index.get1.color}">
+          <input type="text" class="form-control" name="color"
+                 placeholder="¿Qué color buscas?">
         </div>
         <div class="col-md-5">
-          <input type="text" class="form-control" name="marcaPolo" th:placeholder="#{index.get1.marca}">
+          <input type="text" class="form-control" name="marca"
+                 placeholder="¿Qué marca buscas?">
         </div>
         <div class="col-md-2 d-grid">
-          <button class="btn btn-danger" type="submit" th:text="#{index.get1.boton}">Enviar Get1</button>
-        </div>
-      </form>
-    </div>
-
-    <!-- GET2 Camisa -->
-    <div class="search-box mt-4">
-      <form class="row g-2" th:action="@{/get2}" method="get">
-        <div class="col-md-5">
-          <input type="text" class="form-control" name="colorCamisa" th:placeholder="#{index.get2.color}">
-        </div>
-        <div class="col-md-5">
-          <input type="text" class="form-control" name="marcaCamisa" th:placeholder="#{index.get2.marca}">
-        </div>
-        <div class="col-md-2 d-grid">
-          <button class="btn btn-warning" type="submit" th:text="#{index.get2.boton}">Enviar Get2</button>
-        </div>
-      </form>
-    </div>
-
-    <!-- POST1 Pantalón -->
-    <div class="search-box mt-4">
-      <form class="row g-2" th:action="@{/post1}" method="post">
-        <div class="col-md-5">
-          <input type="text" class="form-control" name="colorPantalon" th:placeholder="#{index.post1.color}">
-        </div>
-        <div class="col-md-5">
-          <input type="text" class="form-control" name="marcaPantalon" th:placeholder="#{index.post1.marca}">
-        </div>
-        <div class="col-md-2 d-grid">
-          <button class="btn btn-success" type="submit" th:text="#{index.post1.boton}">Enviar Post1</button>
-        </div>
-      </form>
-    </div>
-
-    <!-- POST2 Zapato -->
-    <div class="search-box mt-4">
-      <form class="row g-2" th:action="@{/post2}" method="post">
-        <div class="col-md-5">
-          <input type="text" class="form-control" name="colorZapato" th:placeholder="#{index.post2.color}">
-        </div>
-        <div class="col-md-5">
-          <input type="text" class="form-control" name="marcaZapato" th:placeholder="#{index.post2.marca}">
-        </div>
-        <div class="col-md-2 d-grid">
-          <button class="btn btn-primary" type="submit" th:text="#{index.post2.boton}">Enviar Post2</button>
+          <button class="btn btn-primary" type="submit">Buscar</button>
         </div>
       </form>
     </div>
@@ -112,28 +70,30 @@
   </div>
 </section>
 
-<!--Tabla de resultados -->
+<!-- Tabla de resultados -->
 <div class="container mt-5">
-  <h2 class="mb-3" th:text="#{index.resultados.titulo}">Resultados ingresados</h2>
+  <h2 class="mb-3">Resultados</h2>
   <table class="table table-striped">
     <thead>
       <tr>
-      	<th>Tipo</th>
-        <th th:text="#{index.resultados.color}">Color</th>
-        <th th:text="#{index.resultados.marca}">Marca</th>
+        <th>Nombre</th>
+        <th>Color</th>
+        <th>Marca</th>
+        <th>Precio</th>
       </tr>
     </thead>
+
     <tbody>
-      <tr th:each="t : ${testimonios}">
-      	<td th:text="${t.tipo}"></td>
-        <td th:text="${t.color}"></td>
-        <td th:text="${t.marca}"></td>
+      <tr th:each="p : ${productos}">
+        <td th:text="${p.nombre}"></td>
+        <td th:text="${p.color}"></td>
+        <td th:text="${p.marca}"></td>
+        <td th:text="${p.precio}"></td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

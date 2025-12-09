@@ -1,52 +1,38 @@
 package com.example.demoweb;
 
-import com.example.demoweb.model.Ropa;
-import com.example.demoweb.repository.RopaRepository;
+import com.example.demoweb.model.ProductoEntity;
+import com.example.demoweb.repository.ProductoEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 public class DemoController {
 
     @Autowired
-    private RopaRepository ropaRepo;
+    private ProductoEntityRepository productoEntityRepo;
+
 
     // ------------------- INDEX -------------------
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("testimonios", ropaRepo.findAll());
+        model.addAttribute("productos", productoEntityRepo.findAll());
         return "index";
     }
 
-    @GetMapping("/get1")
-    public String get1(@RequestParam("colorPolo") String colorPolo,
-                       @RequestParam("marcaPolo") String marcaPolo) {
-        ropaRepo.save(new Ropa("GET1 - Polo", colorPolo, marcaPolo));
-        return "redirect:/";
+
+    @GetMapping("/buscar-producto")
+    @ResponseBody
+    public List<ProductoEntity> buscarProducto(
+            @RequestParam("color") String color,
+            @RequestParam("marca") String marca) {
+
+        return productoEntityRepo.findByColorIgnoreCaseAndMarcaIgnoreCase(color, marca);
     }
 
-    @GetMapping("/get2")
-    public String get2(@RequestParam("colorCamisa") String colorCamisa,
-                       @RequestParam("marcaCamisa") String marcaCamisa) {
-        ropaRepo.save(new Ropa("GET2 - Camisa", colorCamisa, marcaCamisa));
-        return "redirect:/";
-    }
-
-    @PostMapping("/post1")
-    public String post1(@RequestParam("colorPantalon") String colorPantalon,
-                        @RequestParam("marcaPantalon") String marcaPantalon) {
-        ropaRepo.save(new Ropa("POST1 - Pantalón", colorPantalon, marcaPantalon));
-        return "redirect:/";
-    }
-
-    @PostMapping("/post2")
-    public String post2(@RequestParam("colorZapato") String colorZapato,
-                        @RequestParam("marcaZapato") String marcaZapato) {
-        ropaRepo.save(new Ropa("POST2 - Zapato", colorZapato, marcaZapato));
-        return "redirect:/";
-    }
 
     // ------------------- OTROS -------------------
     @GetMapping("/menu")
@@ -54,6 +40,6 @@ public class DemoController {
 
     @GetMapping("/contacto")
     public String contacto() { return "contacto"; }
-}
 
+}
 
