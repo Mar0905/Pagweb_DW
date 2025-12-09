@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administrador | Modempres</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            padding: 0;
+        }
+
+
+
+        .form-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .product-id-box {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .info-alert {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+
+        .admin-wrapper {
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            border-radius: 15px;
+            padding: 30px 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(44, 62, 80, 0.2);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .admin-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .admin-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .admin-info h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-info p {
+            font-size: 1rem;
+            opacity: 0.95;
+            margin: 0;
+        }
+
+        .admin-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-logout {
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-logout:hover {
+            background: rgba(192, 57, 43, 1);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 15px;
+            padding: 35px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #34495e;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .products-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .products-table thead {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+        }
+
+        .products-table thead th {
+            padding: 16px 12px;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            border: none;
+        }
+
+        .products-table tbody td {
+            padding: 15px 12px;
+            vertical-align: middle;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+            color: #495057;
+            font-size: 0.9rem;
+        }
+
+        .products-table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .products-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .products-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .product-id-badge {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-block;
+        }
+
+        .update-form {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .update-form input {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            min-width: 100px;
+            transition: all 0.2s;
+        }
+
+        .update-form input:focus {
+            outline: none;
+            border-color: #34495e;
+            box-shadow: 0 0 0 0.2rem rgba(52, 73, 94, 0.15);
+        }
+
+        .btn-update {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-size: 0.85rem;
+        }
+
+        .btn-update:hover {
+            background: linear-gradient(135deg, #229954, #1e8449);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-size: 0.85rem;
+        }
+
+        .btn-edit:hover {
+            background: linear-gradient(135deg, #2980b9, #21618c);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .price-text {
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .stock-badge {
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .stock-high {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .stock-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .stock-low {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .color-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            display: inline-block;
+            background: #e9ecef;
+            color: #495057;
+            border: 1px solid #dee2e6;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-left: 4px solid #27ae60;
+            border-radius: 10px;
+            padding: 20px 25px;
+            margin-top: 25px;
+            color: #1b5e20;
+        }
+
+        .info-box strong {
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #495057;
+        }
+
+        @media (max-width : 768px) {
+            .admin-header {
+                padding: 25px 20px;
+            }
+
+            .admin-header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .content-card {
+                padding: 20px;
+            }
+
+            .table-wrapper {
+                padding: 10px;
+            }
+
+            .update-form {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .update-form input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-wrapper container my-4">
+        <div class="admin-container">
+            <!-- HEADER -->
+            <div class="admin-header">
+                <div class="admin-header-content">
+                    <div class="admin-info">
+                        <h1><i class="bi bi-shield-check"></i> Panel de Administrador</h1>
+                        <p>Bienvenido, <span class="admin-badge" th:text="${nombreAdmin}">Admin</span></p>
+                    </div>
+                    <div>
+                        <a th:href="@{/admin/productos/nuevo}" class="btn btn-success me-2">
+                            <i class="bi bi-plus-circle"></i> Nuevo Producto
+                        </a>
+                        <a th:href="@{/logout}" class="btn-logout">
+                            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MENSAJE DE ÉXITO -->
+            <div class="content-card" th:if="${msg}">
+                <div class="alert alert-success d-flex align-items-center">
+                    <i class="bi bi-check-circle me-2"></i>
+                    <span th:text="${msg}"></span>
+                </div>
+            </div>
+
+            <!-- TABLA DE PRODUCTOS -->
+            <div class="content-card">
+                <h2 class="section-title">
+                    <i class="bi bi-box-seam"></i> Gestión de Inventario
+                </h2>
+
+                <div class="table-responsive">
+                    <table class="table table-hover products-table align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Talla</th>
+                                <th>Marca</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- SIN PRODUCTOS -->
+                            <tr th:if="${productos == null or productos.isEmpty()}">
+                                <td colspan="8" class="text-center py-5">
+                                    <div class="empty-state">
+                                        <i class="bi bi-inbox display-1 text-muted"></i>
+                                        <h4 class="mt-3 text-muted">No hay productos registrados</h4>
+                                        <p class="text-muted">Haz clic en "Nuevo Producto" para comenzar</p>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- CON PRODUCTOS -->
+                            <tr th:each="p : ${productos}">
+                                <td><strong th:text="${p.idProducto}"></strong></td>
+                                <td th:text="${p.nombre}"></td>
+                                <td><strong>S/ <span
+                                            th:text="${#numbers.formatDecimal(p.precio, 1, 2)}"></span></strong></td>
+                                <td>
+                                    <span th:class="${p.stock > 0} ? 'text-success' : 'text-danger'"
+                                        th:text="${p.stock}"></span>
+                                </td>
+                                <td th:text="${p.talla ?: '—'}"></td>
+                                <td th:text="${p.marca ?: '—'}"></td>
+                                <td>
+                                    <span th:class="${p.activo} 
+                                        ? 'badge bg-success' 
+                                        : 'badge bg-danger'" th:text="${p.activo} ? 'Activo' : 'Inactivo'"></span>
+                                </td>
+                                <td class="text-center">
+                                    <a th:href="@{/admin/productos/editar/{id}(id=${p.idProducto})}"
+                                        class="btn btn-sm btn-outline-primary me-1" title="Editar">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a th:href="@{/admin/productos/eliminar/{id}(id=${p.idProducto})}"
+                                        class="btn btn-sm btn-outline-danger" title="Eliminar"
+                                        onclick="return confirm('¿Estás seguro de eliminar este producto?')">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- INFO FOOTER -->
+                <div class="info-box mt-3 p-3 bg-light rounded">
+                    <small class="text-muted">
+                        <i class="bi bi-info-circle"></i>
+                        Total de productos: <strong th:text="${productos != null ? productos.size() : 0}"></strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

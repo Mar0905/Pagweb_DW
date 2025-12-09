@@ -12,7 +12,6 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_producto")
     private Long idProducto;
-
     private String nombre;
     private String descripcion;
     private BigDecimal precio;

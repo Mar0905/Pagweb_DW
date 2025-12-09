@@ -19,4 +19,5 @@ public class ProductoController {
 		model.addAttribute("productos", productoService.listarActivos());
 		return "productos";
 	}
+		
 }

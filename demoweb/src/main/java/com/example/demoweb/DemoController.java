@@ -7,15 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 public class DemoController {
 
     @Autowired
     private RopaRepository ropaRepo;
-
-    private List<Testimonio2> testimoniosNovedades = new java.util.ArrayList<>();
 
     // ------------------- INDEX -------------------
     @GetMapping("/")
@@ -52,19 +48,6 @@ public class DemoController {
         return "redirect:/";
     }
 
-    @GetMapping("/novedades")
-    public String novedades(Model model) {
-        model.addAttribute("testimoniosNovedades", testimoniosNovedades);
-        model.addAttribute("nuevoTestimonio2", new Testimonio2());
-        return "novedades";
-    }
-
-    @PostMapping("/agregarTestimonioNovedad")
-    public String agregarTestimonioNovedad(@ModelAttribute("nuevoTestimonio2") Testimonio2 testimonio) {
-        testimoniosNovedades.add(testimonio);
-        return "redirect:/novedades";
-    }
-
     // ------------------- OTROS -------------------
     @GetMapping("/menu")
     public String menu() { return "menu"; }
@@ -72,4 +55,5 @@ public class DemoController {
     @GetMapping("/contacto")
     public String contacto() { return "contacto"; }
 }
+
 

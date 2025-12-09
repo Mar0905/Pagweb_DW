@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras | Modempres</title>
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">  
+    
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+        <div class="mt-4 fw-semibold text-primary">Cargando carrito...</div>
+    </div>
+
+    <div class="notification-badge" id="notification">
+        <i class="bi bi-check-circle-fill fs-4"></i>
+        <div>
+            <div class="fw-bold" id="notificationTitle">¡Éxito!</div>
+            <span id="notificationText">Producto agregado al carrito</span>
+        </div>
+    </div>
+
+    <div class="toast-notification" id="toastNotification">
+        <i class="bi bi-info-circle-fill fs-4 text-primary"></i>
+        <div>
+            <div class="fw-bold" id="toastTitle">Información</div>
+            <span id="toastText">Mensaje de información</span>
+        </div>
+        <button class="btn-close ms-auto" onclick="hideToast()"></button>
+    </div>
+
+    <div class="cart-container">
+        <header class="cart-header">
+            <div class="cart-header-content">
+                <div>
+                    <h1 class="cart-title">
+                        <i class="bi bi-cart-check-fill"></i>
+                        Mi Carrito de Moda
+                        <span class="badge bg-beige text-primary rounded-pill fs-5 px-3 py-2 counter-pop" id="cartCount">0</span>
+                    </h1>
+                    <p class="mb-0 mt-3 opacity-90 fs-5">Revise sus productos antes de finalizar la compra</p>
+                </div>
+                <div class="cart-stats">
+                    <div class="stat-item">
+                        <span class="stat-value" id="statItems">0</span>
+                        <span class="stat-label">Productos</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="statTotal">S/ 0.00</span>
+                        <span class="stat-label">Total</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="statDiscount">-S/ 0.00</span>
+                        <span class="stat-label">Ahorro</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="cart-main">
+            <main class="cart-items-section">
+                <div class="section-header">
+                    <h3><i class="bi bi-bag-heart"></i> Productos en su carrito</h3>
+                    <button class="btn btn-outline-light btn-lg px-4 py-2 fw-semibold" id="selectAllBtn">
+                        <i class="bi bi-check-square"></i> Seleccionar todos
+                    </button>
+                </div>
+                
+                <div class="cart-items" id="cartItems">
+                    <div class="cart-empty">
+                        <div class="empty-icon">
+                            <i class="bi bi-cart-x-fill"></i>
+                        </div>
+                        <h4 class="empty-title">Su carrito está vacío</h4>
+                        <p class="text-muted mb-4 fs-5">Agregue productos para comenzar su compra</p>
+                        <a href="/productos" class="btn btn-warning btn-lg px-5 py-3 fw-bold">
+                            <i class="bi bi-shop"></i> Explorar Catálogo
+                        </a>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="cart-sidebar">
+                <div class="summary-card">
+                    <h4 class="summary-header">
+                        <i class="bi bi-receipt-cutoff"></i>
+                        Resumen de Pedido
+                    </h4>
+                    
+                    <div class="summary-row">
+                        <span class="summary-label">Subtotal:</span>
+                        <span class="summary-value" id="subtotalAmount">S/ 0.00</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span class="summary-label">Descuento:</span>
+                        <span class="summary-value text-success fw-bold" id="discountAmount">-S/ 0.00</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span class="summary-label">Envío:</span>
+                        <span class="summary-value" id="shippingAmount">S/ 0.00</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span class="summary-label">IGV (18%):</span>
+                        <span class="summary-value" id="taxAmount">S/ 0.00</span>
+                    </div>
+                    
+                    <div class="summary-row" style="padding-top: 25px; border-top: 3px solid var(--beige);">
+                        <span class="summary-label" style="font-size: 1.3rem; color: var(--primary);">Total:</span>
+                        <span class="summary-total" id="totalAmount">S/ 0.00</span>
+                    </div>
+
+                    <div class="shipping-progress">
+                        <div class="shipping-info">
+                            <span><i class="bi bi-truck"></i> Envío gratis desde S/ 300</span>
+                            <span id="shippingRemaining">Faltan S/ 300.00</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="shippingProgress" style="width: 0%"></div>
+                        </div>
+                        <div class="shipping-message" id="shippingMessage">
+                            <i class="bi bi-gift"></i>
+                            Agregue S/ 300.00 más para envío gratis
+                        </div>
+                    </div>
+
+                    <div class="discount-section">
+                        <label class="form-label fw-bold fs-5 text-primary">Código de Descuento</label>
+                        <div class="discount-input-group">
+                            <input type="text" 
+                                   class="discount-input" 
+                                   id="discountCode" 
+                                   placeholder="Ej: MODA20">
+                            <button class="apply-discount-btn" id="applyDiscountBtn">
+                                <i class="bi bi-tag"></i> Aplicar
+                            </button>
+                        </div>
+                        <div class="mt-3">
+                            <small class="text-muted">Cupones disponibles: 
+                                <span class="badge bg-beige text-primary mx-1">MODA20</span>
+                                <span class="badge bg-beige text-primary mx-1">PRIMERA</span>
+                                <span class="badge bg-beige text-primary mx-1">VERANO25</span>
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons desktop-actions">
+                        <button class="main-action-btn btn-checkout" id="checkoutBtn">
+                            <i class="bi bi-lock-fill"></i>
+                            Proceder al Pago
+                        </button>
+                        <a href="/productos" class="main-action-btn btn-continue">
+                            <i class="bi bi-arrow-left-circle"></i>
+                            Seguir Comprando
+                        </a>
+                        <button class="main-action-btn btn-clear" id="clearCartBtn">
+                            <i class="bi bi-trash3-fill"></i>
+                            Vaciar Carrito
+                        </button>
+                    </div>
+                </div>
+
+                <div class="summary-card">
+                    <h4 class="summary-header">
+                        <i class="bi bi-shield-check"></i>
+                        Compra 100% Segura
+                    </h4>
+                    <div class="security-icons">
+                        <div class="security-icon">
+                            <i class="bi bi-shield-lock-fill text-success"></i>
+                            <span class="fw-semibold">Pago Seguro</span>
+                        </div>
+                        <div class="security-icon">
+                            <i class="bi bi-truck text-primary"></i>
+                            <span class="fw-semibold">Envío Rápido</span>
+                        </div>
+                        <div class="security-icon">
+                            <i class="bi bi-arrow-return-left text-warning"></i>
+                            <span class="fw-semibold">Devoluciones</span>
+                        </div>
+                        <div class="security-icon">
+                            <i class="bi bi-headset text-danger"></i>
+                            <span class="fw-semibold">Soporte 24/7</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="text-center mb-3 text-muted fw-semibold">Métodos de Pago</div>
+                        <div class="payment-methods">
+                            <div class="payment-method">VISA</div>
+                            <div class="payment-method">MC</div>
+                            <div class="payment-method">PAGO</div>
+                            <div class="payment-method">EFECT</div>
+                            <div class="payment-method">YAPE</div>
+                            <div class="payment-method">PLIN</div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <div class="recommendations-section">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="summary-header mb-0">
+                    <i class="bi bi-stars"></i>
+                    Productos Recomendados
+                </h4>
+                <span class="badge bg-beige text-primary fs-6 px-3 py-2">¡Nuevos Ingresos!</span>
+            </div>
+            <div class="recommendations-grid" id="recommendationsGrid"></div>
+        </div>
+    </div>
+
+    <div class="mobile-actions">
+        <button class="main-action-btn btn-checkout" id="mobileCheckoutBtn">
+            <i class="bi bi-lock-fill"></i>
+            Pagar: S/ <span id="mobileTotal">0.00</span>
+        </button>
+    </div>
+
+    <div class="floating-demo-buttons">
+        <div class="demo-buttons-container">
+            <button class="demo-btn demo-btn-beige" onclick="cart.addRandomProduct()">
+                <i class="bi bi-shuffle"></i> Producto Aleatorio
+            </button>
+            <button class="demo-btn demo-btn-primary" onclick="cart.addSampleProducts()">
+                <i class="bi bi-cart-plus"></i> Agregar Muestra
+            </button>
+            <button class="demo-btn demo-btn-success" onclick="cart.applyDiscount('MODA20')">
+                <i class="bi bi-tag"></i> Aplicar Descuento
+            </button>
+            <button class="demo-btn demo-btn-warning" onclick="cart.showToast('¡Oferta especial!', 'Envía gratis en compras mayores a S/ 300', 'warning')">
+                <i class="bi bi-gift"></i> Ver Ofertas
+            </button>
+            <button class="demo-btn demo-btn-danger" onclick="cart.clearCart()">
+                <i class="bi bi-trash3"></i> Vaciar Carrito
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const FASHION_PRODUCTS = [
+            {
+                id: 1,
+                nombre: "Blusa Formal",
+                descripcion: "Blusa elegante para ocasiones especiales con detalles en encaje",
+                precio: 189.90,
+                imagenUrl: "/img/blusa_formal.avif",
+                categoria: "Blusas",
+                stock: 15,
+                destacado: true,
+                oferta: 15
+            },
+            {
+                id: 2,
+                nombre: "Camisa Elegante",
+                descripcion: "Camisa moderna para look profesional o casual",
+                precio: 159.90,
+                imagenUrl: "/img/camisa_elegante.webp",
+                categoria: "Camisas",
+                stock: 8,
+                destacado: true
+            },
+            {
+                id: 3,
+                nombre: "Campera de Cuero",
+                descripcion: "Campera de cuero sintético con estilo moderno",
+                precio: 299.90,
+                imagenUrl: "/img/campera_cuero.jpg",
+                categoria: "Camperas",
+                stock: 12,
+                oferta: 10
+            },
+            {
+                id: 4,
+                nombre: "Casaca Deportiva",
+                descripcion: "Casaca ligera para actividades deportivas",
+                precio: 149.90,
+                imagenUrl: "/img/casaca_deportiva.jpg",
+                categoria: "Deportiva",
+                stock: 20
+            },
+            {
+                id: 5,
+                nombre: "Chaqueta Casual",
+                descripcion: "Chaqueta cálida para uso diario en temporada fría",
+                precio: 219.90,
+                imagenUrl: "/img/chaqueta_casual.avif",
+                categoria: "Chaquetas",
+                stock: 10,
+                destacado: true
+            },
+            {
+                id: 6,
+                nombre: "Chaqueta Denim",
+                descripcion: "Chaqueta de mezclilla clásica para cualquier ocasión",
+                precio: 199.90,
+                imagenUrl: "/img/chaqueta_denim.webp",
+                categoria: "Denim",
+                stock: 15,
+                oferta: 20
+            },
+            {
+                id: 7,
+                nombre: "Chompa de Lana",
+                descripcion: "Chompa abrigadora de lana para el invierno",
+                precio: 179.90,
+                imagenUrl: "/img/chompa_lana.avif",
+                categoria: "Chompas",
+                stock: 8,
+                destacado: true
+            },
+            {
+                id: 8,
+                nombre: "Falda Plisada",
+                descripcion: "Falda elegante con pliegues para look femenino",
+                precio: 139.90,
+                imagenUrl: "/img/falda_plisada.avif",
+                categoria: "Faldas",
+                stock: 18
+            },
+            {
+                id: 9,
+                nombre: "Gorra Deportiva",
+                descripcion: "Gorra moderna para actividades deportivas",
+                precio: 49.90,
+                imagenUrl: "/img/gorra_deportiva.avif",
+                categoria: "Accesorios",
+                stock: 30
+            },
+            {
+                id: 10,
+                nombre: "Jean Clásico",
+                descripcion: "Jeans clásicos de corte recto para hombre",
+                precio: 159.90,
+                imagenUrl: "/img/jean_clasico.jpg",
+                categoria: "Jeans",
+                stock: 25,
+                destacado: true,
+                oferta: 25
+            },
+            {
+                id: 11,
+                nombre: "Parka Impermeable",
+                descripcion: "Parka resistente al agua para días lluviosos",
+                precio: 279.90,
+                imagenUrl: "/img/parka_impermeable.jpg",
+                categoria: "Abrigos",
+                stock: 7
+            },
+            {
+                id: 12,
+                nombre: "Polo Básico",
+                descripcion: "Polo casual de algodón para uso diario",
+                precio: 89.90,
+                imagenUrl: "/img/polo_basico.jpg",
+                categoria: "Polos",
+                stock: 35
+            },
+            {
+                id: 13,
+                nombre: "Short de Verano",
+                descripcion: "Short ligero para temporada de calor",
+                precio: 79.90,
+                imagenUrl: "/img/short_verano.webp",
+                categoria: "Shorts",
+                stock: 22,
+                destacado: true
+            },
+            {
+                id: 14,
+                nombre: "Sudadera Unisex",
+                descripcion: "Sudadera cómoda para hombre y mujer",
+                precio: 129.90,
+                imagenUrl: "/img/sudadera_unisex.webp",
+                categoria: "Sudaderas",
+                stock: 18
+            }
+        ];
+
+        const RECOMMENDED_PRODUCTS = [
+            {
+                id: 101,
+                nombre: "Nueva Colección",
+                descripcion: "Productos exclusivos de nuestra nueva línea",
+                precio: 399.90,
+                imagenUrl: "/img/nueva.coleccion.jpg",
+                categoria: "Colección",
+                stock: 15
+            },
+            {
+                id: 102,
+                nombre: "Ofertas Especiales",
+                descripcion: "Productos con descuentos limitados",
+                precio: 199.90,
+                imagenUrl: "/img/ofertas.jpg",
+                categoria: "Ofertas",
+                stock: 10
+            },
+            {
+                id: 103,
+                nombre: "Tendencias de Moda",
+                descripcion: "Los productos más populares de la temporada",
+                precio: 249.90,
+                imagenUrl: "/img/tendencias.jpg",
+                categoria: "Tendencias",
+                stock: 12
+            },
+            {
+                id: 104,
+                nombre: "Portada Especial",
+                descripcion: "Producto destacado de nuestra tienda",
+                precio: 349.90,
+                imagenUrl: "/img/porta-12.jpg",
+                categoria: "Destacados",
+                stock: 5
+            }
+        ];
+
+        class FashionShoppingCart {
+            constructor() {
+                this.cart = JSON.parse(localStorage.getItem('fashionCart')) || [];
+                this.shippingCost = 25.00;
+                this.shippingFreeLimit = 300.00;
+                this.taxRate = 0.18;
+                this.discount = 0;
+                this.appliedCoupon = null;
+                this.coupons = {
+                    'MODA20': { type: 'percentage', value: 20, name: '20% de descuento' },
+                    'PRIMERA': { type: 'fixed', value: 50, name: 'Primera compra' },
+                    'VERANO25': { type: 'percentage', value: 25, name: 'Oferta de verano' }
+                };
+                this.savedItems = JSON.parse(localStorage.getItem('savedFashionItems')) || [];
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.createParticles();
+                this.loadRecommendations();
+                this.renderCart();
+                this.setupKeyboardShortcuts();
+                this.showWelcomeMessage();
+            }
+
+            setupEventListeners() {
+                document.getElementById('checkoutBtn').addEventListener('click', () => this.checkout());
+                document.getElementById('mobileCheckoutBtn').addEventListener('click', () => this.checkout());
+                document.getElementById('clearCartBtn').addEventListener('click', () => this.clearCart());
+                document.getElementById('applyDiscountBtn').addEventListener('click', () => this.applyDiscount());
+                document.getElementById('selectAllBtn').addEventListener('click', () => this.toggleSelectAll());
+                document.getElementById('discountCode').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.applyDiscount();
+                });
+            }
+
+            setupKeyboardShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.key === 'a') {
+                        e.preventDefault();
+                        this.toggleSelectAll();
+                    }
+                    if (e.ctrlKey && e.key === 'd') {
+                        e.preventDefault();
+                        this.addRandomProduct();
+                    }
+                    if (e.ctrlKey && e.key === 'c') {
+                        e.preventDefault();
+                        this.clearCart();
+                    }
+                });
+            }
+
+            createParticles() {
+                const particlesContainer = document.createElement('div');
+                particlesContainer.className = 'particles';
+                
+                for (let i = 0; i < 20; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    
+                    const size = Math.random() * 20 + 5;
+                    const x = Math.random() * 100;
+                    const y = Math.random() * 100;
+                    const duration = Math.random() * 20 + 10;
+                    const delay = Math.random() * 5;
+                    
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.left = `${x}%`;
+                    particle.style.top = `${y}%`;
+                    particle.style.animationDuration = `${duration}s`;
+                    particle.style.animationDelay = `${delay}s`;
+                    particle.style.opacity = Math.random() * 0.1 + 0.05;
+                    
+                    particlesContainer.appendChild(particle);
+                }
+                
+                document.body.appendChild(particlesContainer);
+            }
+
+            showWelcomeMessage() {
+                if (!localStorage.getItem('cartWelcomeShown')) {
+                    setTimeout(() => {
+                        this.showNotification('¡Bienvenido a Modempres!', 'Explore nuestra colección de moda', 'info');
+                        localStorage.setItem('cartWelcomeShown', 'true');
+                    }, 1000);
+                }
+            }
+
+            addProduct(productId) {
+                const product = FASHION_PRODUCTS.find(p => p.id === productId);
+                if (!product) {
+                    this.showNotification('Producto no encontrado', 'Intente con otro producto', 'error');
+                    return;
+                }
+
+                const existingItem = this.cart.find(item => item.id === productId);
+                
+                if (existingItem) {
+                    if (existingItem.quantity >= product.stock) {
+                        this.showNotification(`Stock máximo alcanzado`, `Solo tenemos ${product.stock} unidades de ${product.nombre}`, 'warning');
+                        return;
+                    }
+                    existingItem.quantity++;
+                    this.showNotification('Cantidad aumentada', `${product.nombre} (${existingItem.quantity} unidades)`, 'success');
+                } else {
+                    this.cart.push({
+                        ...product,
+                        quantity: 1,
+                        selected: true,
+                        addedAt: new Date().toISOString()
+                    });
+                    this.showNotification('¡Producto agregado!', product.nombre, 'success');
+                }
+
+                this.saveCart();
+                this.renderCart();
+                this.animateCartIcon();
+                this.playAddSound();
+            }
+
+            addRandomProduct() {
+                const randomIndex = Math.floor(Math.random() * FASHION_PRODUCTS.length);
+                const product = FASHION_PRODUCTS[randomIndex];
+                this.addProduct(product.id);
+            }
+
+            addSampleProducts() {
+                const indices = new Set();
+                while (indices.size < 3 && indices.size < FASHION_PRODUCTS.length) {
+                    indices.add(Math.floor(Math.random() * FASHION_PRODUCTS.length));
+                }
+                
+                this.showLoading(true);
+                
+                let added = 0;
+                indices.forEach((index, i) => {
+                    setTimeout(() => {
+                        this.addProduct(FASHION_PRODUCTS[index].id);
+                        added++;
+                        
+                        if (added === indices.size) {
+                            setTimeout(() => {
+                                this.showLoading(false);
+                                this.showNotification('Muestra agregada', '3 productos agregados al carrito', 'success');
+                            }, 500);
+                        }
+                    }, i * 300);
+                });
+            }
+
+            saveForLater(productId) {
+                const itemIndex = this.cart.findIndex(item => item.id === productId);
+                if (itemIndex === -1) return;
+
+                const item = this.cart[itemIndex];
+                const existingSavedItem = this.savedItems.find(saved => saved.id === productId);
+
+                if (existingSavedItem) {
+                    this.showNotification('Ya está guardado', 'Este producto ya está en su lista de deseados', 'info');
+                    return;
+                }
+
+                this.savedItems.push({
+                    ...item, 
+                    savedDate: new Date().toISOString(),
+                    originalQuantity: item.quantity
+                });
+                this.cart.splice(itemIndex, 1);
+                
+                this.saveCart();
+                this.saveSavedItems();
+                this.renderCart();
+                this.showNotification('Guardado para después', item.nombre, 'success');
+            }
+
+            removeItem(id, animate = true) {
+                const item = this.cart.find(item => item.id === id);
+                if (!item) return;
+
+                if (animate) {
+                    const itemElement = document.getElementById(`item-${id}`);
+                    if (itemElement) {
+                        itemElement.classList.add('fade-out');
+                        setTimeout(() => {
+                            this.cart = this.cart.filter(item => item.id !== id);
+                            this.saveCart();
+                            this.renderCart();
+                            this.showNotification('Producto eliminado', item.nombre, 'info');
+                            this.playRemoveSound();
+                        }, 500);
+                    }
+                } else {
+                    this.cart = this.cart.filter(item => item.id !== id);
+                    this.saveCart();
+                    this.renderCart();
+                    this.showNotification('Producto eliminado', item.nombre, 'info');
+                }
+            }
+
+            updateQuantity(id, delta) {
+                const item = this.cart.find(item => item.id === id);
+                if (!item) return;
+
+                const newQuantity = item.quantity + delta;
+                if (newQuantity < 1) {
+                    this.removeItem(id);
+                    return;
+                }
+
+                if (newQuantity > item.stock) {
+                    this.showNotification(`Stock máximo: ${item.stock} unidades`, 'No podemos ofrecer más unidades', 'warning');
+                    return;
+                }
+
+                item.quantity = newQuantity;
+                this.saveCart();
+                this.renderCart();
+                
+                const subtotalElement = document.querySelector(`#item-${id} .item-subtotal`);
+                if (subtotalElement) {
+                    subtotalElement.classList.add('pulse');
+                    setTimeout(() => subtotalElement.classList.remove('pulse'), 500);
+                }
+                
+                if (delta > 0) {
+                    this.showToast('Cantidad aumentada', `${item.nombre}: ${newQuantity} unidades`, 'info');
+                }
+            }
+
+            updateQuantityInput(id, value) {
+                const quantity = parseInt(value);
+                if (isNaN(quantity) || quantity < 1) return;
+
+                const item = this.cart.find(item => item.id === id);
+                if (!item) return;
+
+                if (quantity > item.stock) {
+                    this.showNotification(`Stock máximo: ${item.stock} unidades`, 'Stock limitado disponible', 'warning');
+                    document.querySelector(`#item-${id} .qty-input`).value = item.stock;
+                    item.quantity = item.stock;
+                } else {
+                    item.quantity = quantity;
+                }
+
+                this.saveCart();
+                this.renderCart();
+            }
+
+            toggleSelectAll() {
+                const allSelected = this.cart.every(item => item.selected);
+                this.cart.forEach(item => item.selected = !allSelected);
+                this.saveCart();
+                this.renderCart();
+                
+                const action = !allSelected ? 'seleccionados' : 'deseleccionados';
+                this.showToast(`Productos ${action}`, `${this.cart.length} productos ${action}`, 'info');
+            }
+
+            toggleSelectItem(id) {
+                const item = this.cart.find(item => item.id === id);
+                if (item) {
+                    item.selected = !item.selected;
+                    this.saveCart();
+                    this.renderCart();
+                    
+                    const action = item.selected ? 'seleccionado' : 'deseleccionado';
+                    this.showToast(`Producto ${action}`, item.nombre, 'info');
+                }
+            }
+
+            getSelectedItems() {
+                return this.cart.filter(item => item.selected);
+            }
+
+            getSubtotal() {
+                return this.getSelectedItems().reduce((sum, item) => {
+                    const price = item.oferta ? item.precio * (1 - item.oferta/100) : item.precio;
+                    return sum + (price * item.quantity);
+                }, 0);
+            }
+
+            getShipping() {
+                const subtotal = this.getSubtotal();
+                return subtotal >= this.shippingFreeLimit ? 0 : this.shippingCost;
+            }
+
+            getTax() {
+                const subtotal = this.getSubtotal();
+                return (subtotal - this.discount) * this.taxRate;
+            }
+
+            getTotal() {
+                const subtotal = this.getSubtotal();
+                const shipping = this.getShipping();
+                const tax = this.getTax();
+                return subtotal - this.discount + shipping + tax;
+            }
+
+            getTotalDiscount() {
+                const couponDiscount = this.discount;
+                const productDiscounts = this.cart.reduce((sum, item) => {
+                    if (item.oferta) {
+                        return sum + (item.precio * (item.oferta/100) * item.quantity);
+                    }
+                    return sum;
+                }, 0);
+                
+                return couponDiscount + productDiscounts;
+            }
+
+            applyDiscount(code = null) {
+                const codeInput = document.getElementById('discountCode');
+                const codeToApply = code || codeInput.value.trim().toUpperCase();
+                
+                if (!codeToApply) {
+                    this.showNotification('Ingrese un código', 'Escriba un código de descuento', 'warning');
+                    codeInput.focus();
+                    return;
+                }
+
+                const coupon = this.coupons[codeToApply];
+                if (!coupon) {
+                    this.showNotification('Código inválido', 'El código ingresado no es válido', 'error');
+                    codeInput.classList.add('shake');
+                    setTimeout(() => codeInput.classList.remove('shake'), 500);
+                    return;
+                }
+
+                if (this.appliedCoupon === codeToApply) {
+                    this.showNotification('Cupón ya aplicado', 'Este cupón ya está activo en su carrito', 'info');
+                    return;
+                }
+
+                const subtotal = this.getSubtotal();
+                let discountAmount = 0;
+
+                if (coupon.type === 'percentage') {
+                    discountAmount = subtotal * (coupon.value / 100);
+                } else if (coupon.type === 'fixed') {
+                    discountAmount = Math.min(coupon.value, subtotal);
+                }
+
+                if (discountAmount <= 0) {
+                    this.showNotification('No aplica', 'El cupón no aplica para esta compra', 'warning');
+                    return;
+                }
+
+                this.discount = discountAmount;
+                this.appliedCoupon = codeToApply;
+                this.saveCart();
+                this.renderCart();
+                
+                this.showNotification(`¡Cupón aplicado!`, `${coupon.name}: -S/ ${discountAmount.toFixed(2)}`, 'success');
+                
+                if (!code) {
+                    codeInput.value = '';
+                }
+            }
+
+            clearCart() {
+                if (this.cart.length === 0) {
+                    this.showNotification('Carrito vacío', 'No hay productos para eliminar', 'info');
+                    return;
+                }
+
+                Swal.fire({
+                    title: '<h3 class="text-primary">¿Vaciar carrito completo?</h3>',
+                    html: `<div class="text-start">
+                            <p class="mb-3">Se eliminarán <strong>${this.cart.length}</strong> productos del carrito:</p>
+                            <div style="max-height: 150px; overflow-y: auto; margin: 15px 0; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                                ${this.cart.map(item => `
+                                    <div style="padding: 5px 0; border-bottom: 1px solid #dee2e6;">
+                                        ${item.quantity}x ${item.nombre}
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <p class="text-danger mt-3"><i class="bi bi-exclamation-triangle"></i> Esta acción no se puede deshacer</p>
+                           </div>`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#e74c3c',
+                    cancelButtonColor: '#95a5a6',
+                    confirmButtonText: '<i class="bi bi-trash3"></i> Sí, vaciar carrito',
+                    cancelButtonText: '<i class="bi bi-x-circle"></i> Cancelar',
+                    width: 500,
+                    backdrop: 'rgba(0,0,0,0.4)'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.cart.forEach((item, index) => {
+                            const itemElement = document.getElementById(`item-${item.id}`);
+                            if (itemElement) {
+                                setTimeout(() => {
+                                    itemElement.classList.add('fade-out');
+                                }, index * 100);
+                            }
+                        });
+
+                        setTimeout(() => {
+                            this.cart = [];
+                            this.discount = 0;
+                            this.appliedCoupon = null;
+                            this.saveCart();
+                            this.renderCart();
+                            this.showNotification('Carrito vaciado', 'Todos los productos fueron eliminados', 'info');
+                        }, this.cart.length * 100 + 500);
+                    }
+                });
+            }
+
+            async checkout() {
+                if (this.cart.length === 0) {
+                    this.showNotification('Carrito vacío', 'Agregue productos antes de pagar', 'warning');
+                    return;
+                }
+
+                const selectedItems = this.getSelectedItems();
+                if (selectedItems.length === 0) {
+                    this.showNotification('Seleccione productos', 'Seleccione al menos un producto para comprar', 'warning');
+                    return;
+                }
+
+                this.showLoading(true);
+
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                const total = this.getTotal();
+                const subtotal = this.getSubtotal();
+                const shipping = this.getShipping();
+                const tax = this.getTax();
+                const totalDiscount = this.getTotalDiscount();
+
+                Swal.fire({
+                    title: '<h3 class="text-primary"><i class="bi bi-credit-card"></i> Confirmar Compra</h3>',
+                    html: `<div class="text-start">
+                            <div class="alert alert-beige mb-3">
+                                <i class="bi bi-info-circle"></i> Revise su pedido antes de confirmar
+                            </div>
+                            <h6 class="fw-bold mb-3">Resumen del pedido:</h6>
+                            <div style="max-height: 200px; overflow-y: auto; margin: 15px 0; padding: 15px; background: #f8f9fa; border-radius: 10px; border: 1px solid #dee2e6;">
+                                ${selectedItems.map(item => {
+                                    const price = item.oferta ? item.precio * (1 - item.oferta/100) : item.precio;
+                                    return `
+                                    <div style="padding: 8px 0; border-bottom: 1px solid #dee2e6; display: flex; justify-content: space-between;">
+                                        <div>
+                                            <strong>${item.quantity}x</strong> ${item.nombre}
+                                            ${item.oferta ? `<span class="badge bg-success ms-2">-${item.oferta}%</span>` : ''}
+                                        </div>
+                                        <div class="fw-bold">S/ ${(price * item.quantity).toFixed(2)}</div>
+                                    </div>
+                                `}).join('')}
+                            </div>
+                            <div style="margin-top: 20px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span>Subtotal:</span>
+                                    <span>S/ ${subtotal.toFixed(2)}</span>
+                                </div>
+                                ${totalDiscount > 0 ? `
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #27ae60;">
+                                    <span>Descuentos totales:</span>
+                                    <span>-S/ ${totalDiscount.toFixed(2)}</span>
+                                </div>
+                                ` : ''}
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span>Envío:</span>
+                                    <span>${shipping === 0 ? '<span class="text-success">Gratis</span>' : `S/ ${shipping.toFixed(2)}`}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                    <span>IGV (18%):</span>
+                                    <span>S/ ${tax.toFixed(2)}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-top: 15px; padding-top: 15px; border-top: 2px solid var(--beige); font-weight: bold; background: rgba(215, 196, 163, 0.1); padding: 15px; border-radius: 8px;">
+                                    <span style="font-size: 1.2rem;">Total a pagar:</span>
+                                    <span style="color: var(--success); font-size: 1.5rem; font-weight: 900;">S/ ${total.toFixed(2)}</span>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <label class="form-label fw-bold">Método de pago:</label>
+                                <select class="form-select">
+                                    <option>Tarjeta de crédito/débito</option>
+                                    <option>Yape / Plin</option>
+                                    <option>Pago en efectivo</option>
+                                    <option>Transferencia bancaria</option>
+                                </select>
+                            </div>
+                           </div>`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#27ae60',
+                    cancelButtonColor: '#95a5a6',
+                    confirmButtonText: '<i class="bi bi-lock-fill"></i> Confirmar pago',
+                    cancelButtonText: '<i class="bi bi-arrow-left"></i> Seguir comprando',
+                    width: 550,
+                    backdrop: 'rgba(0,0,0,0.4)'
+                }).then((result) => {
+                    this.showLoading(false);
+                    
+                    if (result.isConfirmed) {
+                        const purchasedItems = [...selectedItems];
+                        this.cart = this.cart.filter(item => !item.selected);
+                        this.discount = 0;
+                        this.appliedCoupon = null;
+                        this.saveCart();
+                        this.renderCart();
+
+                        const orderNumber = 'ORD-' + Date.now().toString().slice(-8) + '-' + Math.random().toString(36).substr(2, 4).toUpperCase();
+                        
+                        Swal.fire({
+                            title: '<h2 class="text-success"><i class="bi bi-check-circle-fill"></i> ¡Compra Exitosa!</h2>',
+                            html: `<div class="text-center">
+                                    <div class="mb-4">
+                                        <i class="bi bi-gift-fill text-beige" style="font-size: 4rem;"></i>
+                                    </div>
+                                    <h4 class="mb-3">Pedido confirmado #${orderNumber}</h4>
+                                    <p class="text-muted">Recibirá un correo con los detalles de su compra</p>
+                                    <div class="mt-4">
+                                        <div class="alert alert-primary">
+                                            <i class="bi bi-info-circle-fill"></i>
+                                            <strong>Número de pedido:</strong> ${orderNumber}
+                                        </div>
+                                        <div class="alert alert-success">
+                                            <i class="bi bi-truck"></i>
+                                            Su pedido será enviado en 24-48 horas
+                                        </div>
+                                        <div class="alert alert-warning">
+                                            <i class="bi bi-clock-history"></i>
+                                            Tiempo estimado de entrega: 3-5 días hábiles
+                                        </div>
+                                        <div class="mt-4">
+                                            <button class="btn btn-beige" onclick="window.print()">
+                                                <i class="bi bi-printer"></i> Imprimir comprobante
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>`,
+                            confirmButtonText: '<i class="bi bi-check-lg"></i> Aceptar',
+                            width: 500,
+                            backdrop: 'rgba(0,0,0,0.4)'
+                        });
+
+                        this.showNotification('¡Compra realizada!', `Pedido #${orderNumber} confirmado`, 'success');
+                        
+                        this.playSuccessSound();
+                    }
+                });
+            }
+
+            loadRecommendations() {
+                try {
+                    const container = document.getElementById('recommendationsGrid');
+                    container.innerHTML = RECOMMENDED_PRODUCTS.map(item => `
+                        <div class="recommendation-card">
+                            ${item.stock < 10 ? '<div class="ribbon">¡Últimas!</div>' : ''}
+                            <img src="${item.imagenUrl}" alt="${item.nombre}" class="recommendation-img">
+                            <h6 class="recommendation-name">${item.nombre}</h6>
+                            <div class="recommendation-description">${item.descripcion}</div>
+                            <div class="item-category mb-2">
+                                <i class="bi bi-tag"></i> ${item.categoria}
+                                <span class="stock-badge ${item.stock > 15 ? 'stock-high' : item.stock > 5 ? 'stock-medium' : 'stock-low'} ms-2">
+                                    <i class="bi bi-${item.stock > 15 ? 'check-circle' : item.stock > 5 ? 'exclamation-triangle' : 'exclamation-circle'}"></i>
+                                    ${item.stock} unid.
+                                </span>
+                            </div>
+                            <div class="recommendation-price">S/ ${item.precio.toFixed(2)}</div>
+                            <button class="add-recommendation-btn" onclick="cart.addProduct(${item.id})">
+                                <i class="bi bi-cart-plus"></i> Agregar al carrito
+                            </button>
+                        </div>
+                    `).join('');
+                } catch (error) {
+                    console.error('Error loading recommendations:', error);
+                }
+            }
+
+            renderCart() {
+                const container = document.getElementById('cartItems');
+                const selectedItems = this.getSelectedItems();
+                const subtotal = this.getSubtotal();
+                const shipping = this.getShipping();
+                const tax = this.getTax();
+                const total = this.getTotal();
+                const totalDiscount = this.getTotalDiscount();
+                
+                const totalItems = this.cart.reduce((sum, item) => sum + item.quantity, 0);
+                const totalValue = this.cart.reduce((sum, item) => {
+                    const price = item.oferta ? item.precio * (1 - item.oferta/100) : item.precio;
+                    return sum + (price * item.quantity);
+                }, 0);
+
+                if (this.cart.length === 0) {
+                    container.innerHTML = `
+                        <div class="cart-empty">
+                            <div class="empty-icon">
+                                <i class="bi bi-cart-x-fill"></i>
+                            </div>
+                            <h4 class="empty-title">Su carrito está vacío</h4>
+                            <p class="text-muted mb-4 fs-5">Agregue productos para comenzar su compra</p>
+                            <a href="/productos" class="btn btn-warning btn-lg px-5 py-3 fw-bold">
+                                <i class="bi bi-shop"></i> Explorar Catálogo
+                            </a>
+                            <div class="mt-5">
+                                <button class="btn btn-outline-primary btn-lg" onclick="cart.addSampleProducts()">
+                                    <i class="bi bi-magic"></i> Ver productos de muestra
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = this.cart.map((item, index) => {
+                        const price = item.oferta ? item.precio * (1 - item.oferta/100) : item.precio;
+                        const itemSubtotal = price * item.quantity;
+                        const stockStatus = item.stock >= 15 ? 'high' : item.stock >= 5 ? 'medium' : 'low';
+                        const stockText = stockStatus === 'high' ? 'Disponible' : stockStatus === 'medium' ? 'Últimas unidades' : 'Stock limitado';
+                        const stockIcon = stockStatus === 'high' ? 'check-circle' : stockStatus === 'medium' ? 'exclamation-triangle' : 'exclamation-circle';
+                        
+                        const addedDate = new Date(item.addedAt || new Date());
+                        const isNew = (new Date() - addedDate) < 24 * 60 * 60 * 1000;
+                        
+                        return `
+                            <div class="cart-item" id="item-${item.id}" style="--item-index: ${index};">
+                                <input type="checkbox" 
+                                       class="item-checkbox" 
+                                       ${item.selected ? 'checked' : ''}
+                                       onchange="cart.toggleSelectItem(${item.id})">
+                                <div class="item-image-container">
+                                    <img src="${item.imagenUrl}" alt="${item.nombre}" class="item-image">
+                                    ${isNew ? '<div class="item-badge"><i class="bi bi-star-fill"></i> Nuevo</div>' : ''}
+                                    ${item.oferta ? '<div class="special-offer">-' + item.oferta + '%</div>' : ''}
+                                </div>
+                                <div class="item-details">
+                                    <h6 class="item-name">${item.nombre}</h6>
+                                    <div class="item-category">
+                                        <i class="bi bi-tag-fill"></i> ${item.categoria}
+                                        <span class="stock-badge ${stockStatus} ms-2">
+                                            <i class="bi bi-${stockIcon}"></i>
+                                            ${stockText} (${item.stock})
+                                        </span>
+                                    </div>
+                                    <div class="item-description">${item.descripcion}</div>
+                                    <div class="item-sku mt-2">SKU: MOD${String(item.id).padStart(4, '0')}</div>
+                                    ${item.oferta ? `
+                                    <div class="mt-2">
+                                        <span class="text-decoration-line-through text-muted me-2">S/ ${item.precio.toFixed(2)}</span>
+                                        <span class="badge bg-success">Ahorra ${item.oferta}%</span>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                                <div class="price-column">
+                                    ${item.oferta ? '<div class="price-badge">¡Oferta!</div>' : ''}
+                                    <div class="unit-price">S/ ${price.toFixed(2)}</div>
+                                    <div class="price-label">Precio unitario</div>
+                                </div>
+                                <div class="quantity-controls">
+                                    <button class="qty-btn" onclick="cart.updateQuantity(${item.id}, -1)">
+                                        <i class="bi bi-dash"></i>
+                                    </button>
+                                    <div class="qty-input-container">
+                                        <input type="number" 
+                                               class="qty-input" 
+                                               value="${item.quantity}" 
+                                               min="1" 
+                                               max="${item.stock}"
+                                               onchange="cart.updateQuantityInput(${item.id}, this.value)"
+                                               onkeyup="cart.updateQuantityInput(${item.id}, this.value)">
+                                    </div>
+                                    <button class="qty-btn" onclick="cart.updateQuantity(${item.id}, 1)">
+                                        <i class="bi bi-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="subtotal-column">
+                                    <div class="item-subtotal">${itemSubtotal.toFixed(2)}</div>
+                                    <div class="price-label">Subtotal</div>
+                                </div>
+                                <div class="item-actions">
+                                    <button class="action-btn wishlist-btn" onclick="cart.saveForLater(${item.id})" title="Guardar para después">
+                                        <i class="bi bi-heart"></i>
+                                    </button>
+                                    <button class="action-btn save-btn" onclick="cart.showToast('Producto guardado', '${item.nombre} se ha guardado en su lista', 'info')" title="Guardar">
+                                        <i class="bi bi-bookmark"></i>
+                                    </button>
+                                    <button class="action-btn delete-btn" onclick="cart.removeItem(${item.id})" title="Eliminar">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+
+                document.getElementById('cartCount').textContent = totalItems;
+                document.getElementById('cartCount').classList.add('counter-pop');
+                setTimeout(() => document.getElementById('cartCount').classList.remove('counter-pop'), 300);
+                
+                document.getElementById('statItems').textContent = totalItems;
+                document.getElementById('statTotal').textContent = `S/ ${totalValue.toFixed(2)}`;
+                document.getElementById('statDiscount').textContent = `-S/ ${totalDiscount.toFixed(2)}`;
+                document.getElementById('subtotalAmount').textContent = `S/ ${subtotal.toFixed(2)}`;
+                document.getElementById('discountAmount').textContent = `-S/ ${this.discount.toFixed(2)}`;
+                document.getElementById('shippingAmount').textContent = shipping === 0 ? 'Gratis' : `S/ ${shipping.toFixed(2)}`;
+                document.getElementById('taxAmount').textContent = `S/ ${tax.toFixed(2)}`;
+                document.getElementById('totalAmount').textContent = `S/ ${total.toFixed(2)}`;
+                document.getElementById('mobileTotal').textContent = total.toFixed(2);
+
+                const shippingRemaining = Math.max(0, this.shippingFreeLimit - subtotal);
+                const shippingProgress = Math.min(100, (subtotal / this.shippingFreeLimit) * 100);
+                
+                document.getElementById('shippingRemaining').textContent = shipping === 0 ? 
+                    '<i class="bi bi-check-circle"></i> ¡Envío gratis!' : 
+                    `Faltan S/ ${shippingRemaining.toFixed(2)}`;
+                
+                document.getElementById('shippingProgress').style.width = `${shippingProgress}%`;
+                
+                const shippingMessage = document.getElementById('shippingMessage');
+                if (shipping === 0) {
+                    shippingMessage.innerHTML = `
+                        <i class="bi bi-gift-fill text-success"></i>
+                        ¡Felicidades! Tienes envío gratis en tu pedido
+                    `;
+                    shippingMessage.style.background = 'rgba(39, 174, 96, 0.1)';
+                    shippingMessage.style.borderLeftColor = 'var(--success)';
+                } else if (shippingProgress >= 80) {
+                    shippingMessage.innerHTML = `
+                        <i class="bi bi-fire text-warning"></i>
+                        ¡Casi lo logras! Agrega S/ ${shippingRemaining.toFixed(2)} más para envío gratis
+                    `;
+                    shippingMessage.style.background = 'rgba(243, 156, 18, 0.1)';
+                    shippingMessage.style.borderLeftColor = 'var(--warning)';
+                } else {
+                    shippingMessage.innerHTML = `
+                        <i class="bi bi-truck text-primary"></i>
+                        Agrega S/ ${shippingRemaining.toFixed(2)} más para envío gratis
+                    `;
+                }
+
+                const discountCodeInput = document.getElementById('discountCode');
+                const applyDiscountBtn = document.getElementById('applyDiscountBtn');
+                
+                if (this.appliedCoupon) {
+                    discountCodeInput.value = this.appliedCoupon;
+                    discountCodeInput.disabled = true;
+                    applyDiscountBtn.disabled = true;
+                    applyDiscountBtn.innerHTML = `
+                        <i class="bi bi-check-lg"></i> Aplicado
+                    `;
+                    applyDiscountBtn.style.background = 'var(--gradient-primary)';
+                    applyDiscountBtn.style.color = 'white';
+                } else {
+                    discountCodeInput.disabled = false;
+                    applyDiscountBtn.disabled = false;
+                    applyDiscountBtn.innerHTML = `
+                        <i class="bi bi-tag"></i> Aplicar
+                    `;
+                    applyDiscountBtn.style.background = 'var(--gradient-beige)';
+                    applyDiscountBtn.style.color = 'var(--primary)';
+                }
+
+                const selectAllBtn = document.getElementById('selectAllBtn');
+                const allSelected = this.cart.length > 0 && selectedItems.length === this.cart.length;
+                selectAllBtn.innerHTML = `
+                    <i class="bi bi-${allSelected ? 'check-square' : 'square'}"></i>
+                    ${allSelected ? 'Deseleccionar todos' : 'Seleccionar todos'}
+                `;
+
+                this.updateLocalStorage();
+            }
+
+            saveCart() {
+                localStorage.setItem('fashionCart', JSON.stringify(this.cart));
+                localStorage.setItem('cartDiscount', JSON.stringify({
+                    discount: this.discount,
+                    appliedCoupon: this.appliedCoupon,
+                    savedAt: new Date().toISOString()
+                }));
+            }
+
+            saveSavedItems() {
+                localStorage.setItem('savedFashionItems', JSON.stringify(this.savedItems));
+            }
+
+            updateLocalStorage() {
+                const cartData = {
+                    cart: this.cart,
+                    discount: this.discount,
+                    appliedCoupon: this.appliedCoupon,
+                    timestamp: new Date().toISOString(),
+                    totalItems: this.cart.reduce((sum, item) => sum + item.quantity, 0),
+                    totalValue: this.getTotal()
+                };
+                localStorage.setItem('fashionCartData', JSON.stringify(cartData));
+            }
+
+            showNotification(title, message, type = 'success') {
+                const notification = document.getElementById('notification');
+                const titleElement = document.getElementById('notificationTitle');
+                const textElement = document.getElementById('notificationText');
+                
+                const colors = {
+                    success: 'linear-gradient(135deg, var(--success), #229954)',
+                    error: 'linear-gradient(135deg, var(--danger), #c0392b)',
+                    warning: 'linear-gradient(135deg, var(--warning), #d68910)',
+                    info: 'linear-gradient(135deg, var(--secondary), #2980b9)'
+                };
+                
+                const icons = {
+                    success: 'bi-check-circle-fill',
+                    error: 'bi-x-circle-fill',
+                    warning: 'bi-exclamation-triangle-fill',
+                    info: 'bi-info-circle-fill'
+                };
+                
+                notification.style.background = colors[type] || colors.success;
+                notification.querySelector('i').className = `bi ${icons[type] || icons.success} fs-4`;
+                
+                titleElement.textContent = title;
+                textElement.textContent = message;
+                notification.style.display = 'flex';
+                
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            }
+
+            showToast(title, message, type = 'info') {
+                const toast = document.getElementById('toastNotification');
+                const toastTitle = document.getElementById('toastTitle');
+                const toastText = document.getElementById('toastText');
+                
+                toast.className = `toast-notification ${type}`;
+                toastTitle.textContent = title;
+                toastText.textContent = message;
+                toast.style.display = 'flex';
+                
+                setTimeout(() => {
+                    this.hideToast();
+                }, 5000);
+            }
+
+            hideToast() {
+                document.getElementById('toastNotification').style.display = 'none';
+            }
+
+            showLoading(show) {
+                document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none';
+            }
+
+            animateCartIcon() {
+                const cartIcon = document.querySelector('.cart-title i');
+                cartIcon.classList.add('item-added-animation');
+                setTimeout(() => {
+                    cartIcon.classList.remove('item-added-animation');
+                }, 600);
+            }
+
+            playAddSound() {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                } catch (e) {
+                }
+            }
+
+            playRemoveSound() {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(392.00, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(293.66, audioContext.currentTime + 0.1);
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                } catch (e) {
+                }
+            }
+
+            playSuccessSound() {
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                } catch (e) {
+                }
+            }
+        }
+
+        const cart = new FashionShoppingCart();
+        window.cart = cart;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedCart = localStorage.getItem('fashionCartData');
+            if (savedCart) {
+                try {
+                    const cartData = JSON.parse(savedCart);
+                    const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+                    const savedTime = new Date(cartData.timestamp);
+                    
+                    if (savedTime > oneWeekAgo) {
+                        cart.cart = cartData.cart || [];
+                        cart.discount = cartData.discount || 0;
+                        cart.appliedCoupon = cartData.appliedCoupon || null;
+                        cart.renderCart();
+                        
+                        setTimeout(() => {
+                            cart.showToast('¡Bienvenido de nuevo!', `Tienes ${cartData.totalItems || 0} productos en tu carrito`, 'info');
+                        }, 1000);
+                    }
+                } catch (error) {
+                    console.error('Error loading saved cart:', error);
+                }
+            }
+
+            const discountData = localStorage.getItem('cartDiscount');
+            if (discountData) {
+                try {
+                    const data = JSON.parse(discountData);
+                    cart.discount = data.discount || 0;
+                    cart.appliedCoupon = data.appliedCoupon || null;
+                } catch (error) {
+                    console.error('Error loading discount data:', error);
+                }
+            }
+
+            if (window.location.search.includes('demo=true')) {
+                setTimeout(() => {
+                    cart.addSampleProducts();
+                }, 1000);
+            }
+        });
+
+        function hideToast() {
+            document.getElementById('toastNotification').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

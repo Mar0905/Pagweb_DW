@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pedido Confirmado</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; text-align: center; padding: 50px; background-color: #f5f7fa; }
+        h2 { color: #1b1f4f; }
+        a { background-color: #09084f; color: #fbfff1; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; }
+        a:hover { background-color: #1b1f4f; }
+    </style>
+</head>
+<body>
+    <h2>¡Pedido realizado con éxito!</h2>
+    <p>Gracias por su compra.</p>
+    <a th:href="@{/productos}">Volver al catálogo</a>
+</body>
+</html>
