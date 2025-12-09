@@ -1,7 +1,7 @@
 package com.example.demoweb;
 
 import com.example.demoweb.model.ProductoEntity;
-import com.example.demoweb.repository.ProductoRepository;
+import com.example.demoweb.repository.ProductoEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,35 +13,28 @@ import java.util.List;
 public class DemoController {
 
     @Autowired
-    private ProductoRepository productoRepo;
+    private ProductoEntityRepository productoEntityRepo;
 
 
     // ------------------- INDEX -------------------
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute("productos", productoRepo.findAll());
+        model.addAttribute("productos", productoEntityRepo.findAll());
         return "index";
     }
 
 
-    // 🔥 BUSQUEDA UNICA
     @GetMapping("/buscar-producto")
-    public String buscarProducto(@RequestParam("color") String color,
-                                 @RequestParam("marca") String marca,
-                                 Model model) {
+    @ResponseBody
+    public List<ProductoEntity> buscarProducto(
+            @RequestParam("color") String color,
+            @RequestParam("marca") String marca) {
 
-        List<ProductoEntity> encontrados =
-                productoRepo.findByColorIgnoreCaseAndMarcaIgnoreCase(color, marca);
-
-        model.addAttribute("productos", encontrados);
-        return "index";
+        return productoEntityRepo.findByColorIgnoreCaseAndMarcaIgnoreCase(color, marca);
     }
 
 
     // ------------------- OTROS -------------------
-    @GetMapping("/productos")
-    public String productos() { return "productos"; }
-
     @GetMapping("/menu")
     public String menu() { return "menu"; }
 

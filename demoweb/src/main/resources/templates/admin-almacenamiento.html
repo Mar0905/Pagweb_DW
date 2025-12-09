@@ -15,6 +15,35 @@
             padding: 0;
         }
 
+
+
+        .form-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .product-id-box {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .info-alert {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+
         .admin-wrapper {
             min-height: 100vh;
             padding: 30px 20px;
@@ -319,7 +348,7 @@
             color: #495057;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width : 768px) {
             .admin-header {
                 padding: 25px 20px;
             }
@@ -350,68 +379,92 @@
 </head>
 
 <body>
-    <div class="admin-wrapper">
+    <div class="admin-wrapper container my-4">
         <div class="admin-container">
-            <!-- Header del Admin -->
+            <!-- HEADER -->
             <div class="admin-header">
                 <div class="admin-header-content">
                     <div class="admin-info">
-                        <h1>
-                            <i class="bi bi-shield-check"></i>
-                            Panel de Administrador
-                        </h1>
+                        <h1><i class="bi bi-shield-check"></i> Panel de Administrador</h1>
                         <p>Bienvenido, <span class="admin-badge" th:text="${nombreAdmin}">Admin</span></p>
                     </div>
                     <div>
+                        <a th:href="@{/admin/productos/nuevo}" class="btn btn-success me-2">
+                            <i class="bi bi-plus-circle"></i> Nuevo Producto
+                        </a>
                         <a th:href="@{/logout}" class="btn-logout">
-                            <i class="bi bi-box-arrow-right"></i>
-                            Cerrar Sesión
+                            <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
                         </a>
                     </div>
                 </div>
             </div>
 
-            <!-- Contenido Principal -->
+            <!-- MENSAJE DE ÉXITO -->
+            <div class="content-card" th:if="${msg}">
+                <div class="alert alert-success d-flex align-items-center">
+                    <i class="bi bi-check-circle me-2"></i>
+                    <span th:text="${msg}"></span>
+                </div>
+            </div>
+
+            <!-- TABLA DE PRODUCTOS -->
             <div class="content-card">
                 <h2 class="section-title">
-                    <i class="bi bi-box-seam"></i>
-                    Gestión de Inventario
+                    <i class="bi bi-box-seam"></i> Gestión de Inventario
                 </h2>
 
-                <div class="table-wrapper">
-                    <table class="products-table">
-                        <thead>
+                <div class="table-responsive">
+                    <table class="table table-hover products-table align-middle">
+                        <thead class="table-light">
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
-                                <th>Precio (S/)</th>
+                                <th>Precio</th>
                                 <th>Stock</th>
-                                <th>Color</th>
-                                <th>Acciones</th>
+                                <th>Talla</th>
+                                <th>Marca</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Verificar si hay productos -->
-                            <tr th:if="${listaProductos == null || listaProductos.isEmpty()}">
-                                <td colspan="6">
+                            <!-- SIN PRODUCTOS -->
+                            <tr th:if="${productos == null or productos.isEmpty()}">
+                                <td colspan="8" class="text-center py-5">
                                     <div class="empty-state">
-                                        <i class="bi bi-inbox"></i>
-                                        <h3>No hay productos registrados</h3>
-                                        <p>El inventario está vacío</p>
+                                        <i class="bi bi-inbox display-1 text-muted"></i>
+                                        <h4 class="mt-3 text-muted">No hay productos registrados</h4>
+                                        <p class="text-muted">Haz clic en "Nuevo Producto" para comenzar</p>
                                     </div>
                                 </td>
                             </tr>
 
-                            <!-- Iterar sobre productos -->
-                            <tr th:each="producto : ${listaProductos}">
-                                <td th:text="${producto.id}">1</td>
-                                <td th:text="${producto.nombre}">Camiseta Básica</td>
-                                <td th:text="${producto.precio}">29.90</td>
-                                <td th:text="${producto.stock}">50</td>
-                                <td th:text="${producto.color}">Blanco</td>
+                            <!-- CON PRODUCTOS -->
+                            <tr th:each="p : ${productos}">
+                                <td><strong th:text="${p.idProducto}"></strong></td>
+                                <td th:text="${p.nombre}"></td>
+                                <td><strong>S/ <span
+                                            th:text="${#numbers.formatDecimal(p.precio, 1, 2)}"></span></strong></td>
                                 <td>
-                                    <a th:href="@{'/admin/editar/' + ${producto.id}}" class="btn-edit">
-                                        <i class="bi bi-pencil-square"></i> Editar
+                                    <span th:class="${p.stock > 0} ? 'text-success' : 'text-danger'"
+                                        th:text="${p.stock}"></span>
+                                </td>
+                                <td th:text="${p.talla ?: '—'}"></td>
+                                <td th:text="${p.marca ?: '—'}"></td>
+                                <td>
+                                    <span th:class="${p.activo} 
+                                        ? 'badge bg-success' 
+                                        : 'badge bg-danger'" th:text="${p.activo} ? 'Activo' : 'Inactivo'"></span>
+                                </td>
+                                <td class="text-center">
+                                    <a th:href="@{/admin/productos/editar/{id}(id=${p.idProducto})}"
+                                        class="btn btn-sm btn-outline-primary me-1" title="Editar">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a th:href="@{/admin/productos/eliminar/{id}(id=${p.idProducto})}"
+                                        class="btn btn-sm btn-outline-danger" title="Eliminar"
+                                        onclick="return confirm('¿Estás seguro de eliminar este producto?')">
+                                        <i class="bi bi-trash"></i>
                                     </a>
                                 </td>
                             </tr>
@@ -419,19 +472,19 @@
                     </table>
                 </div>
 
-                <!-- Información adicional -->
-                <div class="info-box">
-                    <strong><i class="bi bi-info-circle"></i> Información:</strong>
-                    <p th:if="${listaProductos != null && !listaProductos.isEmpty()}">
-                        Hay <strong th:text="${listaProductos.size()}">0</strong> productos en el inventario.
-                        Usa "Editar" para modificar un producto.
-                    </p>
-                    <p th:if="${listaProductos == null || listaProductos.isEmpty()}">
-                        No hay productos en el inventario actualmente.
-                    </p>
+                <!-- INFO FOOTER -->
+                <div class="info-box mt-3 p-3 bg-light rounded">
+                    <small class="text-muted">
+                        <i class="bi bi-info-circle"></i>
+                        Total de productos: <strong th:text="${productos != null ? productos.size() : 0}"></strong>
+                    </small>
                 </div>
             </div>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
