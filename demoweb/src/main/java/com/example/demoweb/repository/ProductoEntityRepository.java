@@ -1,13 +1,15 @@
 package com.example.demoweb.repository;
 
-import com.example.demoweb.model.ProductoEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.demoweb.model.Producto;
+
+
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface ProductoEntityRepository extends JpaRepository<ProductoEntity, Long> {
+public interface ProductoEntityRepository extends ProductoRepository {
 
-    List<ProductoEntity> findByColorIgnoreCaseAndMarcaIgnoreCase(String color, String marca);
+    List<Producto> findByColorIgnoreCaseAndMarcaIgnoreCase(String color, String marca);
+
 }
