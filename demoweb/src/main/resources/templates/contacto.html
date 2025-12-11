@@ -9,57 +9,107 @@
 <body>
 
 <div th:replace="menu :: menu"></div>
+
 <div class="container mt-5">
   <h1 class="text-center mb-4" th:text="#{contacto.encabezado}">Contáctanos</h1>
-  
+
   <div class="row">
-    <!-- Formulario -->
+    <!-- FORMULARIO -->
     <div class="col-md-6">
-     <form th:action="@{/enviar}" method="post">
-        <div class="mb-3">
+
+      <form th:action="@{/enviar}" method="post">
+
+        <!-- ========== NOMBRE ========== -->
+        <div th:if="${usuario == null}">
           <label class="form-label" th:text="#{contacto.nombre}">Nombre</label>
-          <input type="text" class="form-control" name="nombre" th:placeholder="#{contacto.nombre.placeholder}" required>
+          <input type="text"
+                 class="form-control"
+                 name="nombre"
+                 th:placeholder="#{contacto.nombre.placeholder}"
+                 required>
         </div>
-        <div class="mb-3">
+
+        <div th:if="${usuario != null}">
+          <label class="form-label" th:text="#{contacto.nombre}">Nombre</label>
+          <input type="text"
+                 class="form-control"
+                 th:value="${usuario.nombre} + ' ' + ${usuario.apellido}"
+                 readonly>
+        </div>
+
+        <!-- ========== CORREO ========== -->
+        <div class="mt-3" th:if="${usuario == null}">
           <label class="form-label" th:text="#{contacto.correo}">Correo</label>
-          <input type="email" class="form-control" name="correo" th:placeholder="#{contacto.correo.placeholder}" required>
+          <input type="email"
+                 class="form-control"
+                 name="correo"
+                 th:placeholder="#{contacto.correo.placeholder}"
+                 required>
         </div>
-        <div class="mb-3">
+
+        <div class="mt-3" th:if="${usuario != null}">
+          <label class="form-label" th:text="#{contacto.correo}">Correo</label>
+          <input type="email"
+                 class="form-control"
+                 th:value="${usuario.email}"
+                 readonly>
+        </div>
+
+        <!-- ========== MENSAJE (siempre editable) ========== -->
+        <div class="mt-3">
           <label class="form-label" th:text="#{contacto.mensaje}">Mensaje</label>
-          <textarea class="form-control" name="mensaje" th:placeholder="#{contacto.mensaje.placeholder}" required></textarea>
+          <textarea class="form-control"
+                    name="mensaje"
+                    rows="5"
+                    th:placeholder="#{contacto.mensaje.placeholder}"
+                    required></textarea>
         </div>
-        <!-- Botón -->
-        <button type="submit" class="btn btn-danger w-100" th:text="#{contacto.boton}">
+
+        <!-- BOTÓN -->
+        <button type="submit"
+                class="btn btn-danger w-100 mt-4"
+                th:text="#{contacto.boton}">
           Enviar
         </button>
+
       </form>
+
     </div>
 
-    <!-- Mapa e información -->
+    <!-- MAPA E INFORMACIÓN -->
     <div class="col-md-6">
       <h5 class="mb-3" th:text="#{contacto.ubicacion}">Nuestra ubicación</h5>
-      
+
       <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d36559.73561413149!2d-71.55961103445665!3d-16.40401017790393!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91424a487785b9b3%3A0xa3c4a612b9942036!2sArequipa!5e1!3m2!1ses-419!2spe!4v1759370298380!5m2!1ses-419!2spe"
-              width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-      
+              width="100%" height="300" style="border:0;" allowfullscreen loading="lazy"></iframe>
+
       <p class="mt-3"><strong>WhatsApp:</strong> <a href="https://wa.me/51999999999" target="_blank">+51 987 654 321</a></p>
       <p><strong>Email:</strong> contacto@modempres.com</p>
 
-      <!-- Redes sociales -->
+      <!-- REDES -->
       <div class="mt-3">
         <h5 th:text="#{contacto.redes}">Síguenos en</h5>
+
         <a href="https://www.facebook.com" target="_blank" class="btn btn-outline-primary me-2">
           <i th:text="#{contacto.facebook}">Facebook</i>
         </a>
+
         <a href="https://www.instagram.com" target="_blank" class="btn btn-outline-danger me-2">
           <i th:text="#{contacto.instagram}">Instagram</i>
         </a>
+
         <a href="https://www.twitter.com" target="_blank" class="btn btn-outline-dark">
-          <i th:text="#{contacto.twitter}">X</i> 
+          <i th:text="#{contacto.twitter}">X</i>
         </a>
       </div>
+
     </div>
   </div>
+</div>
+<div th:if="${usuario != null}" class="text-center mt-4">
+    <a href="/mis-mensajes" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm">
+        📩 Ver mis mensajes enviados
+    </a>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
