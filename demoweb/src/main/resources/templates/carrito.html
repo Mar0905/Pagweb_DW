@@ -3,30 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Carrito de Compras</title>
-    <style>
-body {
+    <style>body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: #f5f7fa;
+    background-color: #f8f9fa;
     margin: 0;
     padding: 0;
-    color: #3c3744;
+    color: #333;
 }
-
-/* Card del título y conteo */
 .card-titulo {
-    background: linear-gradient(135deg, #09084f, #1b1f4f); /* azul más oscuro elegante */
-    color: #fbfff1;
+    background: linear-gradient(135deg, #d7c4a3, #bfa37f);
+    color: #333;
     text-align: center;
     padding: 30px;
     margin: 20px auto;
     width: 90%;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .card-titulo h2 {
     font-size: 2.5rem;
     margin: 0;
+    font-weight: bold;
 }
 
 .card-titulo p {
@@ -34,7 +32,6 @@ body {
     margin: 5px 0;
 }
 
-/* Layout de productos y resumen */
 .contenedor-principal {
     display: flex;
     justify-content: space-between;
@@ -42,7 +39,6 @@ body {
     gap: 20px;
 }
 
-/* Card de productos */
 .card-productos {
     background-color: #ffffff;
     padding: 20px;
@@ -59,25 +55,25 @@ table {
 th, td {
     padding: 10px;
     text-align: center;
-    border-bottom: 1px solid #d0d4e3;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 th {
-    background: linear-gradient(135deg, #1b1f4f, #09084f); /* azul más oscuro */
-    color: #fbfff1;
+    background: linear-gradient(135deg, #d7c4a3, #bfa37f);
+    color: #333;
     font-size: 1.1rem;
+    font-weight: bold;
 }
 
 tr:nth-child(even) td {
-    background-color: #dfe5f5; /* fila alterna azul muy suave */
+    background-color: #faf8f5;
 }
 
 td {
     font-size: 1rem;
-    color: #3c3744;
+    color: #333;
 }
 
-/* Imagen + acciones */
 .producto-contenedor {
     display: flex;
     align-items: center;
@@ -89,6 +85,8 @@ img.producto-imagen {
     width: 80px;
     height: auto;
     border-radius: 6px;
+    background-color: #f8f9fa;
+    padding: 5px;
 }
 
 .acciones {
@@ -97,7 +95,6 @@ img.producto-imagen {
     gap: 5px;
 }
 
-/* Botones -/+ / x */
 button {
     padding: 6px 12px;
     border: none;
@@ -108,46 +105,48 @@ button {
 }
 
 button.aumentar {
-    background-color: #1b1f4f; /* azul oscuro */
-    color: #fbfff1;
+    background-color: #d7c4a3;
+    color: #333;
 }
 
 button.aumentar:hover {
-    background-color: #09084f;
+    background-color: #bfa37f;
+    color: white;
 }
 
 button.disminuir {
-    background-color: #b4c5e4; /* azul muy suave */
-    color: #3c3744;
+    background-color: #e8dcc8;
+    color: #333;
 }
 
 button.disminuir:hover {
-    background-color: #90aaff;
+    background-color: #d7c4a3;
 }
 
 button.eliminar {
-    background-color: #fb6b6b;
+    background-color: #e74c3c;
     color: #ffffff;
 }
 
 button.eliminar:hover {
-    background-color: #e74c3c;
+    background-color: #c0392b;
 }
 
-/* Card de resumen */
 .card-resumen {
-    background: #dbe2f0; /* azul grisáceo muy suave */
-    padding: 20px;
+    background: linear-gradient(135deg, #faf8f5, #f5f0e8);
+    padding: 25px;
     border-radius: 12px;
     width: 35%;
     height: fit-content;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border: 2px solid #e8dcc8;
 }
 
 .card-resumen h3 {
     font-size: 1.8rem;
     margin-bottom: 15px;
-    color: #1b1f4f; /* azul oscuro */
+    color: #333;
+    font-weight: bold;
 }
 
 .resumen-item {
@@ -155,28 +154,43 @@ button.eliminar:hover {
     justify-content: space-between;
     margin-bottom: 12px;
     font-size: 1.1rem;
-    color: #3c3744;
+    color: #333;
+    padding: 8px 0;
+    border-bottom: 1px solid #e8dcc8;
+}
+
+.resumen-item:last-of-type {
+    border-bottom: 2px solid #bfa37f;
+    padding-top: 12px;
+    margin-top: 8px;
 }
 
 .resumen-item strong {
     font-size: 1.3rem;
 }
 
-/* Botón volver al catálogo */
 .btn-catalogo {
-    background-color: #09084f;
-    color: #fbfff1;
-    padding: 10px 20px;
+    background-color: #d7c4a3;
+    color: #333;
+    padding: 12px 24px;
     border-radius: 6px;
     text-decoration: none;
     display: inline-block;
     margin-top: 10px;
     font-weight: bold;
     transition: all 0.2s ease;
+    border: 2px solid #d7c4a3;
 }
 
 .btn-catalogo:hover {
-    background-color: #1b1f4f;
+    background-color: #bfa37f;
+    color: white;
+    border-color: #bfa37f;
+}
+
+form button[type="submit"].btn-catalogo {
+    width: 100%;
+    margin-top: 15px;
 }
     </style>
 </head>
