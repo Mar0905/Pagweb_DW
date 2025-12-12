@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<div th:replace="menu :: menu"></div>
+<div th:replace="~{menu :: menu}"></div>
 
 <div class="container mt-5">
   <h1 class="text-center mb-4" th:text="#{contacto.encabezado}">Contáctanos</h1>
@@ -115,5 +115,3 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
-
