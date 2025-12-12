@@ -1,5 +1,6 @@
 package com.example.demoweb.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,10 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demoweb.service.CarritoService;
 import com.example.demoweb.service.PedidoService;
-
 
 @Controller
 @RequestMapping("/carrito")
@@ -23,7 +25,14 @@ public class CarritoController {
     private PedidoService pedidoService;
 
     @GetMapping
-    public String verCarrito(Model model) {
+    public String verCarrito(Model model, HttpSession session, RedirectAttributes ra) {
+
+        // Validación: si no está logueado → login
+        if (session.getAttribute("usuario") == null) {
+            ra.addFlashAttribute("error", "Debes iniciar sesión para ver tu carrito.");
+            return "redirect:/login";
+        }
+
         var carrito = carritoService.obtenerCarrito();
 
         model.addAttribute("items", carrito.getItems());
@@ -40,19 +49,43 @@ public class CarritoController {
     }
 
     @PostMapping("/agregar")
-    public String agregar(@RequestParam("idProducto") Long idProducto) {
+    @ResponseBody
+    public String agregar(@RequestParam("idProducto") Long idProducto,
+                          HttpSession session) {
+
+        // Validación de login
+        if (session.getAttribute("usuario") == null) {
+            return "LOGIN_REQUIRED";  // Respuesta fetch()
+        }
+
         carritoService.agregarProducto(idProducto);
-        return "redirect:/carrito";
+        return "OK"; 
     }
 
     @PostMapping("/eliminar")
-    public String eliminar(@RequestParam("idProducto") Long idProducto) {
+    public String eliminar(@RequestParam("idProducto") Long idProducto,
+                           HttpSession session,
+                           RedirectAttributes ra) {
+
+        if (session.getAttribute("usuario") == null) {
+            ra.addFlashAttribute("error", "Debes iniciar sesión para manejar tu carrito.");
+            return "redirect:/login";
+        }
+
         carritoService.eliminarProducto(idProducto);
         return "redirect:/carrito";
     }
 
     @PostMapping("/aumentar")
-    public String aumentar(@RequestParam("idProducto") Long idProducto) {
+    public String aumentar(@RequestParam("idProducto") Long idProducto,
+                           HttpSession session,
+                           RedirectAttributes ra) {
+
+        if (session.getAttribute("usuario") == null) {
+            ra.addFlashAttribute("error", "Debes iniciar sesión para manejar tu carrito.");
+            return "redirect:/login";
+        }
+
         carritoService.obtenerCarrito().actualizarCantidad(idProducto,
                 carritoService.obtenerCarrito().getItems().stream()
                     .filter(i -> i.getProducto().getIdProducto().equals(idProducto))
@@ -63,7 +96,15 @@ public class CarritoController {
     }
 
     @PostMapping("/disminuir")
-    public String disminuir(@RequestParam("idProducto") Long idProducto) {
+    public String disminuir(@RequestParam("idProducto") Long idProducto,
+                            HttpSession session,
+                            RedirectAttributes ra) {
+
+        if (session.getAttribute("usuario") == null) {
+            ra.addFlashAttribute("error", "Debes iniciar sesión para manejar tu carrito.");
+            return "redirect:/login";
+        }
+
         carritoService.obtenerCarrito().actualizarCantidad(idProducto,
                 carritoService.obtenerCarrito().getItems().stream()
                     .filter(i -> i.getProducto().getIdProducto().equals(idProducto))
@@ -75,7 +116,13 @@ public class CarritoController {
     }
 
     @PostMapping("/checkout")
-    public String checkout() {
+    public String checkout(HttpSession session, RedirectAttributes ra) {
+
+        if (session.getAttribute("usuario") == null) {
+            ra.addFlashAttribute("error", "Debes iniciar sesión para completar la compra.");
+            return "redirect:/login";
+        }
+
         pedidoService.crearPedidoDesdeCarrito(carritoService.obtenerCarrito());
         carritoService.obtenerCarrito().getItems().clear();
         return "redirect:/pedido/confirmado"; 
