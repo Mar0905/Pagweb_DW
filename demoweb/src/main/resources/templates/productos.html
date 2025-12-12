@@ -138,11 +138,9 @@
 
 
 							<!-- Formulario agregar carrito -->
-							<form th:action="@{/carrito/agregar}" method="post">
-								<input type="hidden" name="idProducto"
-									th:value="${p.idProducto}">
-								<button type="submit" class="btn btn-primary btn-sm">Agregar
-									al carrito</button>
+							<form th:action="@{/carrito/agregar}" method="post" class="form-agregar">
+							    <input type="hidden" name="idProducto" th:value="${p.idProducto}">
+							    <button type="submit" class="btn btn-primary btn-sm">Agregar al carrito</button>
 							</form>
 						</div>
 
@@ -215,67 +213,49 @@
 									id="modal-cantidad" type="number" class="form-control"
 									value="1" min="1" />
 							</div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+	document.querySelectorAll('.form-agregar').forEach(form => {
+	    form.addEventListener('submit', function (e) {
+	        e.preventDefault(); // Evita que el navegador redirija
 
+	        fetch(form.action, {
+	            method: 'POST',
+	            body: new FormData(form)
+	        })
+	        .then(async (response) => {
+	            const text = await response.text();
 
-							<div class="modal-footer">
-								<button class="btn btn-secondary" data-bs-dismiss="modal"
-									th:text="#{catalogo.modal.cerrar}">Cerrar</button>
+	            if (text === "LOGIN_REQUIRED") {
+	                Swal.fire({
+	                    title: 'Inicia sesión',
+	                    text: 'Debes iniciar sesión para agregar productos al carrito.',
+	                    icon: 'warning',
+	                    confirmButtonText: 'Ir al login'
+	                }).then(() => window.location.href = "/login");
+	                return;
+	            }
 
-								<button class="btn btn-primary">
-									<i class="bi bi-cart-plus"></i> <span
-										th:text="#{catalogo.modal.agregar}">Agregar</span>
-								</button>
-							</div>
+	            Swal.fire({
+	                title: '¡Producto agregado!',
+	                text: 'El producto se añadió al carrito correctamente.',
+	                icon: 'success',
+	                timer: 1800,
+	                showConfirmButton: false
+	            });
 
-						</div>
-					</div>
-				</div>
-
-				<!-- Bootstrap JS -->
-				<script
-					src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-					<!-- SCRIPT PARA LLENAR EL MODAL -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-
-            var detalleModalEl = document.getElementById('detalleModal');
-
-            detalleModalEl.addEventListener('show.bs.modal', function (event) {
-
-                var button = event.relatedTarget;
-
-                var id = button.getAttribute('data-id');
-                var nombre = button.getAttribute('data-nombre') || 'Sin nombre';
-                var descripcion = button.getAttribute('data-descripcion') || '';
-                var precio = button.getAttribute('data-precio') || '0';
-                var imagen = button.getAttribute('data-imagen') || '/img/default.jpg';
-
-                var modal = this;
-
-                modal.querySelector('.modal-title').textContent = 'Detalles — ' + nombre;
-                modal.querySelector('#modal-nombre').textContent = nombre;
-                modal.querySelector('#modal-descripcion').textContent = descripcion;
-
-                var precioNum = parseFloat(precio);
-                modal.querySelector('#modal-precio').textContent =
-                    'S/ ' + (isNaN(precioNum) ? '0.00' : precioNum.toFixed(2));
-
-                modal.querySelector('#modal-imagen').src = imagen || '/img/default.jpg';
-
-                modal.querySelector('#modal-idProducto').value = id;
-                modal.querySelector('#modal-idTalla').value = modal.querySelector('#modal-talla').value;
-                modal.querySelector('#modal-idCantidad').value = modal.querySelector('#modal-cantidad').value;
-
-                modal.querySelector('#modal-talla').addEventListener('change', function () {
-                    modal.querySelector('#modal-idTalla').value = this.value;
-                });
-
-                modal.querySelector('#modal-cantidad').addEventListener('input', function () {
-                    modal.querySelector('#modal-idCantidad').value = this.value || 1;
-                });
-
-            });
-        });
-    </script>
+	        })
+	        .catch(() => {
+	            Swal.fire({
+	                title: 'Error',
+	                text: 'No se pudo agregar el producto.',
+	                icon: 'error'
+	            });
+	        });
+	    });
+	});
+	</script>
 </body>
 </html>
