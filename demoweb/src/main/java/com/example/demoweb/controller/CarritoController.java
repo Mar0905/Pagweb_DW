@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.demoweb.model.Usuario;
 import com.example.demoweb.service.CarritoService;
 import com.example.demoweb.service.PedidoService;
 
@@ -32,6 +33,7 @@ public class CarritoController {
             ra.addFlashAttribute("error", "Debes iniciar sesión para ver tu carrito.");
             return "redirect:/login";
         }
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
 
         var carrito = carritoService.obtenerCarrito();
 
@@ -44,6 +46,8 @@ public class CarritoController {
                                    .mapToInt(i -> i.getCantidad())
                                    .sum();
         model.addAttribute("totalCantidad", totalCantidad);
+        
+        model.addAttribute("usuario", usuario);
 
         return "carrito"; 
     }

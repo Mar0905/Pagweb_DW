@@ -3,28 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Carrito de Compras</title>
-    <style>body {
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: #f8f9fa;
+    background-color: #f5f7fa;
     margin: 0;
     padding: 0;
-    color: #333;
+    color: #3c3744;
 }
+
+/* Card del título y conteo */
 .card-titulo {
-    background: linear-gradient(135deg, #d7c4a3, #bfa37f);
-    color: #333;
+    background: linear-gradient(135deg, #09084f, #1b1f4f); 
+    color: #fbfff1;
     text-align: center;
     padding: 30px;
     margin: 20px auto;
     width: 90%;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .card-titulo h2 {
     font-size: 2.5rem;
     margin: 0;
-    font-weight: bold;
 }
 
 .card-titulo p {
@@ -39,6 +42,7 @@
     gap: 20px;
 }
 
+/* Card de productos */
 .card-productos {
     background-color: #ffffff;
     padding: 20px;
@@ -55,25 +59,25 @@ table {
 th, td {
     padding: 10px;
     text-align: center;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #d0d4e3;
 }
 
 th {
-    background: linear-gradient(135deg, #d7c4a3, #bfa37f);
-    color: #333;
+    background: linear-gradient(135deg, #1b1f4f, #09084f); 
+    color: #fbfff1;
     font-size: 1.1rem;
-    font-weight: bold;
 }
 
 tr:nth-child(even) td {
-    background-color: #faf8f5;
+    background-color: #dfe5f5;
 }
 
 td {
     font-size: 1rem;
-    color: #333;
+    color: #3c3744;
 }
 
+/* Imagen + acciones */
 .producto-contenedor {
     display: flex;
     align-items: center;
@@ -85,8 +89,6 @@ img.producto-imagen {
     width: 80px;
     height: auto;
     border-radius: 6px;
-    background-color: #f8f9fa;
-    padding: 5px;
 }
 
 .acciones {
@@ -95,6 +97,7 @@ img.producto-imagen {
     gap: 5px;
 }
 
+/* Botones -/+ / x */
 button {
     padding: 6px 12px;
     border: none;
@@ -105,48 +108,46 @@ button {
 }
 
 button.aumentar {
-    background-color: #d7c4a3;
-    color: #333;
+    background-color: #1b1f4f; 
+    color: #fbfff1;
 }
 
 button.aumentar:hover {
-    background-color: #bfa37f;
-    color: white;
+    background-color: #09084f;
 }
 
 button.disminuir {
-    background-color: #e8dcc8;
-    color: #333;
+    background-color: #b4c5e4; 
+    color: #3c3744;
 }
 
 button.disminuir:hover {
-    background-color: #d7c4a3;
+    background-color: #90aaff;
 }
 
 button.eliminar {
-    background-color: #e74c3c;
+    background-color: #fb6b6b;
     color: #ffffff;
 }
 
 button.eliminar:hover {
-    background-color: #c0392b;
+    background-color: #e74c3c;
 }
 
+/* Card de resumen */
 .card-resumen {
-    background: linear-gradient(135deg, #faf8f5, #f5f0e8);
-    padding: 25px;
+    background: #dbe2f0; 
+    padding: 20px;
     border-radius: 12px;
     width: 35%;
     height: fit-content;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    border: 2px solid #e8dcc8;
 }
 
 .card-resumen h3 {
     font-size: 1.8rem;
     margin-bottom: 15px;
-    color: #333;
-    font-weight: bold;
+    color: #1b1f4f; 
 }
 
 .resumen-item {
@@ -154,43 +155,28 @@ button.eliminar:hover {
     justify-content: space-between;
     margin-bottom: 12px;
     font-size: 1.1rem;
-    color: #333;
-    padding: 8px 0;
-    border-bottom: 1px solid #e8dcc8;
-}
-
-.resumen-item:last-of-type {
-    border-bottom: 2px solid #bfa37f;
-    padding-top: 12px;
-    margin-top: 8px;
+    color: #3c3744;
 }
 
 .resumen-item strong {
     font-size: 1.3rem;
 }
 
+/* Botón volver al catálogo */
 .btn-catalogo {
-    background-color: #d7c4a3;
-    color: #333;
-    padding: 12px 24px;
+    background-color: rgb(71, 132, 192);
+    color: #fbfff1;
+    padding: 10px 20px;
     border-radius: 6px;
     text-decoration: none;
     display: inline-block;
     margin-top: 10px;
     font-weight: bold;
     transition: all 0.2s ease;
-    border: 2px solid #d7c4a3;
 }
 
 .btn-catalogo:hover {
-    background-color: #bfa37f;
-    color: white;
-    border-color: #bfa37f;
-}
-
-form button[type="submit"].btn-catalogo {
-    width: 100%;
-    margin-top: 15px;
+    background-color: #1b1f4f;
 }
     </style>
 </head>
@@ -207,43 +193,66 @@ form button[type="submit"].btn-catalogo {
 <div class="contenedor-principal">
 
     <!-- Card Productos -->
-    <div class="card-productos">
-        <table>
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Acciones</th>
-                    <th>Precio Unitario</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="item : ${items}">
-                    <td>
-                        <div class="producto-contenedor">
-                            <img th:src="${item.producto.imagenUrl}" alt="Imagen" class="producto-imagen"/>
-                            <div class="acciones">
-                                <form th:action="@{/carrito/disminuir}" method="post">
-                                    <input type="hidden" name="idProducto" th:value="${item.producto.idProducto}" />
-                                    <button class="disminuir">-</button>
-                                </form>
-                                <form th:action="@{/carrito/aumentar}" method="post">
-                                    <input type="hidden" name="idProducto" th:value="${item.producto.idProducto}" />
-                                    <button class="aumentar">+</button>
-                                </form>
-                                <form th:action="@{/carrito/eliminar}" method="post">
-                                    <input type="hidden" name="idProducto" th:value="${item.producto.idProducto}" />
-                                    <button class="eliminar">x</button>
-                                </form>
-                            </div>
+<div class="card-productos">
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${items}">
+                <!-- PRODUCTO + BOTONES +/- -->
+                <td>
+                    <div class="producto-contenedor">
+
+                        <!-- IMAGEN -->
+                        <img th:src="${item.producto.imagenUrl}" alt="Imagen" class="producto-imagen"/>
+
+                        <!-- BOTONES -/+ -->
+                        <div class="controles-cantidad">
+                            <form th:action="@{/carrito/disminuir}" method="post">
+                                <input type="hidden" name="idProducto" th:value="${item.producto.idProducto}" />
+                                <button class="btn-menos">−</button>
+                            </form>
+
+                            <span class="cantidad-texto" th:text="${item.cantidad}"></span>
+
+                            <form th:action="@{/carrito/aumentar}" method="post">
+                                <input type="hidden" name="idProducto" th:value="${item.producto.idProducto}" />
+                                <button class="btn-mas">+</button>
+                            </form>
                         </div>
-                    </td>
-                    <td th:text="'S/ ' + ${item.producto.precio}"></td>
-                    <td th:text="'S/ ' + ${item.subtotal}"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+
+                    </div>
+                </td>
+
+                <!-- CANTIDAD-->
+                <td th:text="${item.cantidad}"></td>
+
+                <!-- PRECIO UNITARIO -->
+                <td th:text="'S/ ' + ${item.producto.precio}"></td>
+
+                <!-- SUBTOTAL CORRECTO -->
+                <td th:text="'S/ ' + ${item.subtotal}"></td>
+
+                <!-- ICONO ELIMINAR -->
+                <td>
+                    <form th:action="@{/carrito/eliminar}" method="post">
+                        <input type="hidden" name="idProducto" th:value="${item.producto.idProducto}" />
+                        <button class="btn-eliminar">
+                            ✖
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
     <!-- Card Resumen -->
     <div class="card-resumen">
@@ -260,11 +269,138 @@ form button[type="submit"].btn-catalogo {
             <strong>Total:</strong>
             <strong th:text="'S/ ' + ${total}"></strong>
         </div>
-        <form th:action="@{/carrito/checkout}" method="post">
-		    <button type="submit" class="btn-catalogo">Realizar Pedido</button>
-		</form>
+		<button type="button" class="btn-catalogo" data-bs-toggle="modal" data-bs-target="#modalPedido">
+		    Realizar Pedido
+		</button>
     </div>
 </div>
+
+	<!-- MODAL: Formulario de Pedido -->
+<div class="modal fade" id="modalPedido" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Finalizar Pedido</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="formPedido">
+
+                    <!-- DATOS DEL CLIENTE -->
+                    <h5 class="mb-3">Datos del Cliente</h5>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Nombre</label>
+                            <input type="text" class="form-control" name="nombre" 
+                                   th:value="${usuario.nombre}" readonly>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Apellido</label>
+                            <input type="text" class="form-control" name="apellido" 
+                                   th:value="${usuario.apellido}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label>Email</label>
+                        <input type="email" class="form-control" name="email" 
+                               th:value="${usuario.email}" readonly>
+                    </div>
+
+                    <div class="mt-3">
+                        <label>Teléfono</label>
+                        <input type="text" class="form-control" name="telefono" placeholder="Ej: 987654321" required>
+                    </div>
+
+                    <hr>
+
+                    <!-- ENTREGA -->
+                    <h5 class="mb-3">Entrega</h5>
+
+                    <select class="form-select" name="entrega" id="selectEntrega">
+                        <option value="tienda">Recoger en tienda</option>
+                        <option value="envio">Envío a domicilio</option>
+                    </select>
+
+                    <!-- CAMPOS SOLO SI ES ENVÍO -->
+                    <div id="datosEnvio" style="display:none;">
+                        <div class="mt-3">
+                            <label>Dirección</label>
+                            <input type="text" class="form-control" name="direccion">
+                        </div>
+
+                        <div class="mt-3">
+                            <label>Referencia</label>
+                            <input type="text" class="form-control" name="referencia">
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- PAGO -->
+                    <h5 class="mb-3">Método de Pago</h5>
+
+                    <select name="pago" class="form-select">
+                        <option value="efectivo">Efectivo</option>
+                        <option value="tarjeta">Tarjeta</option>
+                        <option value="yape">Yape / Plin</option>
+                    </select>
+
+                    <div class="mt-3">
+                        <label>Comentarios adicionales</label>
+                        <textarea class="form-control" name="comentarios"></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button class="btn btn-success" id="btnEnviarPedido">Confirmar Pedido</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.getElementById("selectEntrega").addEventListener("change", function () {
+    document.getElementById("datosEnvio").style.display =
+        this.value === "envio" ? "block" : "none";
+});
+
+document.getElementById("btnEnviarPedido").addEventListener("click", function () {
+
+    const formData = new FormData(document.getElementById("formPedido"));
+
+    fetch("/carrito/checkout", {
+        method: "POST",
+        body: formData,
+        credentials: "same-origin"
+    })
+    .then(r => r.text())
+    .then(resp => {
+
+        if (resp === "LOGIN_REQUIRED") {
+            alert("Debes iniciar sesión.");
+            window.location.href = "/login";
+            return;
+        }
+
+        if (resp === "OK") {
+            window.location.href = "/pedido/confirmado";
+            return;
+        }
+
+        console.log("Respuesta inesperada:", resp);
+        alert("Error inesperado: revisa consola.");
+    });
+});
+</script>
 
 </body>
 </html>
