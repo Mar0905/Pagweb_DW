@@ -76,14 +76,9 @@ public class CarritoController {
 
     @PostMapping("/checkout")
     public String checkout() {
-        // Crear el pedido desde el carrito
         pedidoService.crearPedidoDesdeCarrito(carritoService.obtenerCarrito());
-
-        // Limpiar carrito después del pedido
         carritoService.obtenerCarrito().getItems().clear();
-
-        // Redirigir a página de confirmación
-        return "redirect:/pedido/confirmado"; // ajusté la URL para que concuerde con PedidoController
+        return "redirect:/pedido/confirmado"; 
     }
 }
 

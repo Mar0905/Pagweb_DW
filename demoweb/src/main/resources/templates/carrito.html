@@ -109,7 +109,7 @@ button {
 }
 
 button.aumentar {
-    background-color: #1b1f4f; /* azul oscuro */
+    background-color: #1b1f4f; 
     color: #fbfff1;
 }
 
@@ -118,7 +118,7 @@ button.aumentar:hover {
 }
 
 button.disminuir {
-    background-color: #b4c5e4; /* azul muy suave */
+    background-color: #b4c5e4; 
     color: #3c3744;
 }
 
@@ -137,7 +137,7 @@ button.eliminar:hover {
 
 /* Card de resumen */
 .card-resumen {
-    background: #dbe2f0; /* azul grisáceo muy suave */
+    background: #dbe2f0; 
     padding: 20px;
     border-radius: 12px;
     width: 35%;
@@ -148,7 +148,7 @@ button.eliminar:hover {
 .card-resumen h3 {
     font-size: 1.8rem;
     margin-bottom: 15px;
-    color: #1b1f4f; /* azul oscuro */
+    color: #1b1f4f; 
 }
 
 .resumen-item {
@@ -165,7 +165,7 @@ button.eliminar:hover {
 
 /* Botón volver al catálogo */
 .btn-catalogo {
-    background-color: #09084f;
+    background-color: rgb(71, 132, 192);
     color: #fbfff1;
     padding: 10px 20px;
     border-radius: 6px;
@@ -194,43 +194,66 @@ button.eliminar:hover {
 <div class="contenedor-principal">
 
     <!-- Card Productos -->
-    <div class="card-productos">
-        <table>
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Acciones</th>
-                    <th>Precio Unitario</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="item : ${items}">
-                    <td>
-                        <div class="producto-contenedor">
-                            <img th:src="${item.producto.imagenUrl}" alt="Imagen" class="producto-imagen"/>
-                            <div class="acciones">
-                                <form th:action="@{/carrito/disminuir}" method="post">
-                                    <input type="hidden" name="idProducto" th:value="${item.producto.idProducto}" />
-                                    <button class="disminuir">-</button>
-                                </form>
-                                <form th:action="@{/carrito/aumentar}" method="post">
-                                    <input type="hidden" name="idProducto" th:value="${item.producto.idProducto}" />
-                                    <button class="aumentar">+</button>
-                                </form>
-                                <form th:action="@{/carrito/eliminar}" method="post">
-                                    <input type="hidden" name="idProducto" th:value="${item.producto.idProducto}" />
-                                    <button class="eliminar">x</button>
-                                </form>
-                            </div>
+<div class="card-productos">
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Subtotal</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${items}">
+                <!-- PRODUCTO + BOTONES +/- -->
+                <td>
+                    <div class="producto-contenedor">
+
+                        <!-- IMAGEN -->
+                        <img th:src="${item.producto.imagenUrl}" alt="Imagen" class="producto-imagen"/>
+
+                        <!-- BOTONES -/+ -->
+                        <div class="controles-cantidad">
+                            <form th:action="@{/carrito/disminuir}" method="post">
+                                <input type="hidden" name="idProducto" th:value="${item.producto.idProducto}" />
+                                <button class="btn-menos">−</button>
+                            </form>
+
+                            <span class="cantidad-texto" th:text="${item.cantidad}"></span>
+
+                            <form th:action="@{/carrito/aumentar}" method="post">
+                                <input type="hidden" name="idProducto" th:value="${item.producto.idProducto}" />
+                                <button class="btn-mas">+</button>
+                            </form>
                         </div>
-                    </td>
-                    <td th:text="'S/ ' + ${item.producto.precio}"></td>
-                    <td th:text="'S/ ' + ${item.subtotal}"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+
+                    </div>
+                </td>
+
+                <!-- CANTIDAD-->
+                <td th:text="${item.cantidad}"></td>
+
+                <!-- PRECIO UNITARIO -->
+                <td th:text="'S/ ' + ${item.producto.precio}"></td>
+
+                <!-- SUBTOTAL CORRECTO -->
+                <td th:text="'S/ ' + ${item.subtotal}"></td>
+
+                <!-- ICONO ELIMINAR -->
+                <td>
+                    <form th:action="@{/carrito/eliminar}" method="post">
+                        <input type="hidden" name="idProducto" th:value="${item.producto.idProducto}" />
+                        <button class="btn-eliminar">
+                            ✖
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
     <!-- Card Resumen -->
     <div class="card-resumen">
